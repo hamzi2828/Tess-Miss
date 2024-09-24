@@ -17,6 +17,7 @@ class UserController extends Controller
      * Display a listing of the resource.
      */
     public function index()
+<<<<<<< Updated upstream
     {
     
         // Render the view and pass the users to the front end
@@ -47,6 +48,13 @@ class UserController extends Controller
     
         // Optionally return the users as JSON response
         return response()->json(['data' => $users]);
+=======
+    {  
+        $users = User::all();
+        
+        // Render the view and pass the users to the front end
+        return view('pages.users.users-list', compact('users'));
+>>>>>>> Stashed changes
     }
     
     
@@ -58,7 +66,11 @@ class UserController extends Controller
      */
     public function create()
     {
+<<<<<<< Updated upstream
        
+=======
+        
+>>>>>>> Stashed changes
     }
 
     /**
@@ -123,9 +135,9 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, User $user)
     {
-        //
+        dd($request->all(), $id);
     }
 
     /**
