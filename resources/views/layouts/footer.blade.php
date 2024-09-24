@@ -1,4 +1,4 @@
-<!-- Core JS -->
+{{-- <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
 
     <script src="{{asset('assets/vendor/libs/jquery/jquery.js')}}"></script>
@@ -59,4 +59,28 @@
     <script src="{{ asset('assets/js/charts-chartjs.js') }}"></script>
     <script src="{{ asset('assets/vendor/libs/chartjs/chartjs.js') }}"></script>
     <!-- Page JS -->
-    <script src="{{ asset('assets/js/dashboards-crm.js') }}"></script>
+    <script src="{{ asset('assets/js/dashboards-crm.js') }}"></script> --}}
+<!-- Core JS -->
+<!-- build:js assets/vendor/js/core.js -->
+
+<script src="{{ asset('assets/vendor/libs/jquery/jquery.js') }}"></script>
+<script src="{{ asset('assets/vendor/js/bootstrap.js') }}"></script>
+<script src="{{ asset('assets/vendor/libs/node-waves/node-waves.js') }}"></script>
+<script src="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
+<script src="{{ asset('assets/vendor/js/menu.js') }}"></script>
+
+<!-- endbuild -->
+
+<!-- Main JS -->
+<script src="{{ asset('assets/js/main.js') }}"></script>
+
+<!-- Vendors JS -->
+<script src="{{ asset('assets/vendor/libs/apex-charts/apexcharts.js') }}"></script>
+<script src="{{ asset('assets/vendor/libs/select2/select2.js') }}"></script>
+<script src="{{ asset('assets/vendor/libs/flatpickr/flatpickr.js') }}"></script>
+<script src="{{ asset('assets/vendor/libs/sweetalert2/sweetalert2.js') }}"></script>
+
+<!-- Page Specific JS -->
+<script src="{{ asset('assets/js/app-ecommerce-product-list.js') }}"></script>
+<script src="{{ asset('assets/js/modal-edit-user.js') }}"></script>
+<script src="{{ asset('assets/js/charts-apex.js') }}"></script>

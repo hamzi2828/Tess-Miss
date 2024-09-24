@@ -1,13 +1,14 @@
 @extends('master.master')
 
 @section('content')
+
 <div class="content-wrapper">
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="app-ecommerce-user">
             <div class="d-flex justify-content-between mb-3">
                 <h4 class="fw-bold">Users</h4>
                 <div class="d-flex col-lg-5">
-                    <input type="text" id="userSearch" class="form-control me-2" placeholder="Search users">
+                    <input type="text" id="customUserSearch" class="form-control me-2" placeholder="Search users" onkeyup="filterTable()">
                     <button class="btn btn-primary btn-lg" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAddUser" style="width: 224px;">
                         <i class="ti ti-plus me-1"></i> Add User
                     </button>
@@ -16,7 +17,7 @@
 
             <div class="card">
                 <div class="card-datatable table-responsive">
-                    <table id="userTable" class="table border-top">
+                    <table id="customUserTable" class="table border-top">
                         <thead>
                             <tr>
                                 <th></th>
@@ -37,12 +38,11 @@
                                 <td>{{ $i++ }}</td>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        @if($user->picture) <!-- Check if the picture exists -->
+                                        @if($user->picture)
                                             <img src="{{ asset('storage/' . $user->picture) }}" alt="Avatar" class="rounded-circle me-2" style="width: 50px; height: 50px;">
                                         @else
                                             @php
-                                                // Generate initials if no picture is available
-                                                $initials = strtoupper(substr($user->name, 0, 2)); // Use first two initials for a better representation
+                                                $initials = strtoupper(substr($user->name, 0, 2));
                                                 $stateNum = rand(0, 5);
                                                 $states = ['success', 'danger', 'warning', 'info', 'primary', 'secondary'];
                                                 $state = $states[$stateNum];
@@ -56,7 +56,6 @@
                                             <small>{{ $user->email }}</small>
                                         </div>
                                     </div>
-                                    
                                 </td>
                                 <td>{{ $user->role }}</td>
                                 <td>{{ $user->department }}</td>
@@ -86,19 +85,19 @@
                                         <i class="ti ti-edit"></i>
                                     </button>
 
-                                        <form action="{{ route('users.destroy', $user->id) }}" method="POST" style="display:            inline-block;">
+                                        <form action="{{ route('users.destroy', $user->id) }}" method="POST" style="display: inline-block;">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-icon btn-text-secondary rounded-pill waves-effect waves-light mx-1">
                                                 <i class="ti ti-trash"></i>
                                             </button>
                                         </form>
+                                      
                                     </div>
                                 </td>
                             </tr>
                             @endforeach
                         </tbody>
-                        
                     </table>
                 </div>
             </div>
@@ -113,41 +112,34 @@
 
     <div class="content-backdrop fade"></div>
 </div>
-@endsection
-
-@section('scripts')
-<!-- Include jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<!-- Include DataTables CSS -->
-<link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
-
-<!-- Include DataTables JS -->
-<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 
 <script>
-$(document).ready(function() {
-    console.log("jQuery is working!"); // Check if this shows in the console
+    // Function to filter table rows based on the search input
+    function filterTable() {
+        let input = document.getElementById('customUserSearch');
+        let filter = input.value.toLowerCase();
+        let table = document.getElementById('customUserTable');
+        let rows = table.getElementsByTagName('tr');
 
-    // Initialize DataTable
-    var table = $('#userTable').DataTable({
-        paging: true,
-        lengthChange: true,
-        searching: true,
-        ordering: true,
-        info: true,
-        autoWidth: false,
-        responsive: true,
-    });
+        for (let i = 1; i < rows.length; i++) {
+            let cells = rows[i].getElementsByTagName('td');
+            let match = false;
 
-    console.log("DataTable initialized:", table); // Check if DataTable is initialized
+            for (let j = 0; j < cells.length; j++) {
+                let cellValue = cells[j].textContent || cells[j].innerText;
+                if (cellValue.toLowerCase().indexOf(filter) > -1) {
+                    match = true;
+                    break;
+                }
+            }
 
-    // Custom search input
-    $('#userSearch').on('keyup', function() {
-        console.log("Searching for:", this.value); // Log the search value
-        table.search(this.value).draw();
-    });
-});
-
+            if (match) {
+                rows[i].style.display = "";
+            } else {
+                rows[i].style.display = "none";
+            }
+        }
+    }
 </script>
+
 @endsection

@@ -1,4 +1,4 @@
-<!-- Favicon -->
+{{-- <!-- Favicon -->
 <link rel="icon" type="image/x-icon" href="{{asset('assets/img/favicon/favicon.ico')}}" />
 
 <!-- Fonts -->
@@ -54,4 +54,36 @@
 
 <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
 <script src="{{asset('assets/js/config.js')}}"></script>
+ --}}
+<!-- Favicon -->
+<link rel="icon" type="image/x-icon" href="{{ asset('assets/img/favicon/favicon.ico') }}" />
 
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+<!-- Icons -->
+<link rel="stylesheet" href="{{ asset('assets/vendor/fonts/fontawesome.css') }}" />
+<link rel="stylesheet" href="{{ asset('assets/vendor/fonts/tabler-icons.css') }}" />
+
+<!-- Core CSS -->
+<link rel="stylesheet" href="{{ asset('assets/vendor/css/rtl/core.css') }}" class="template-customizer-core-css" />
+<link rel="stylesheet" href="{{ asset('assets/vendor/css/rtl/theme-default.css') }}" class="template-customizer-theme-css" />
+<link rel="stylesheet" href="{{ asset('assets/css/demo.css') }}" />
+
+<!-- Vendors CSS -->
+<link rel="stylesheet" href="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
+<link rel="stylesheet" href="{{ asset('assets/vendor/libs/apex-charts/apex-charts.css') }}" />
+<link rel="stylesheet" href="{{ asset('assets/vendor/libs/swiper/swiper.css') }}" />
+<link rel="stylesheet" href="{{ asset('assets/vendor/libs/select2/select2.css') }}" />
+
+<!-- Page Specific CSS -->
+<link rel="stylesheet" href="{{ asset('assets/vendor/css/pages/app-ecommerce.css') }}" />
+
+<!-- Helpers -->
+<script src="{{ asset('assets/vendor/js/helpers.js') }}"></script>
+
+<!-- Config and Customizer -->
+<script src="{{ asset('assets/vendor/js/template-customizer.js') }}"></script>
+<script src="{{ asset('assets/js/config.js') }}"></script>
