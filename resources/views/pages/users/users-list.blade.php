@@ -16,7 +16,7 @@
 
             <div class="card">
                 <div class="card-datatable table-responsive">
-                    <table id="userTable" class="table border-top users">
+                    <table id="userTable" class="table border-top">
                         <thead>
                             <tr>
                                 <th></th>
@@ -61,7 +61,14 @@
                                 <td>{{ $user->role }}</td>
                                 <td>{{ $user->department }}</td>
                                 <td>{{ $user->phone }}</td>
-                                <td>{{ $user->status }}</td>
+                                <td>
+                                    @if($user->status == 'active')
+                                        <span class="badge bg-success">Active</span>
+                                    @else
+                                        <span class="badge bg-danger">Inactive</span>
+                                    @endif
+                                </td>
+                                
                                 <td class="text-lg-center">
                                     <div class="d-flex justify-content-center align-items-center">
 
@@ -120,6 +127,8 @@
 
 <script>
 $(document).ready(function() {
+    console.log("jQuery is working!"); // Check if this shows in the console
+
     // Initialize DataTable
     var table = $('#userTable').DataTable({
         paging: true,
@@ -131,15 +140,14 @@ $(document).ready(function() {
         responsive: true,
     });
 
+    console.log("DataTable initialized:", table); // Check if DataTable is initialized
+
     // Custom search input
     $('#userSearch').on('keyup', function() {
+        console.log("Searching for:", this.value); // Log the search value
         table.search(this.value).draw();
     });
-
-    // Debugging: Log to check if search input is detected
-    $('#userSearch').on('keyup', function() {
-        console.log("Searching for: ", this.value); // Log the input value
-    });
 });
+
 </script>
 @endsection
