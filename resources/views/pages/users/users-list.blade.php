@@ -1,39 +1,6 @@
 @extends('master.master')
 
 @section('content')
-<<<<<<< Updated upstream
-      <!-- Content wrapper -->
-      <div class="content-wrapper">
-        <!-- Content -->
-
-        <div class="container-xxl flex-grow-1 container-p-y">
-          <!-- Users List Table -->
-          <div class="card">
-            <div class="card-datatable table-responsive">
-              <table class="datatables-users table">
-                <thead class="border-top">
-                  <tr>
-                    <th></th>              <!-- Responsive control column -->
-                    <th></th>              <!-- Checkbox column -->
-                    <th>User</th>          <!-- User name and email -->
-                    <th>Role</th>          <!-- User role -->
-                    <th>Department</th>    <!-- Department column -->
-                    <th>Phone</th>         <!-- Phone column -->
-                    <th>Status</th>        <!-- Status column -->
-                    <th>Actions</th>       <!-- Actions column -->
-                  </tr>
-                </thead>
-              </table>
-            </div>
-            @include('pages.users.add-users')
-          </div>
-        </div>
-        <!-- / Content -->
-
-        <div class="content-backdrop fade"></div>
-      </div>
-@endsection
-=======
 <div class="content-wrapper">
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="app-ecommerce-user">
@@ -144,7 +111,6 @@
 @section('scripts')
 <!-- Include jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
->>>>>>> Stashed changes
 
 <!-- Include DataTables CSS -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
@@ -153,10 +119,6 @@
 <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 
 <script>
-<<<<<<< Updated upstream
- window.reload(/)
-</script>
-=======
 $(document).ready(function() {
     // Initialize DataTable
     var table = $('#userTable').DataTable({
@@ -181,4 +143,3 @@ $(document).ready(function() {
 });
 </script>
 @endsection
->>>>>>> Stashed changes

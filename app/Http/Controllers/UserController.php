@@ -98,16 +98,51 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
-    {
-        dd($request->all(), $id);
-    }
+   
+     public function update(Request $request, User $user)
+     {
+        
+         // Validate the incoming request
+         $validatedData = $request->validate([
+             'userFullname' => 'required|string|max:255',
+             'userEmail' => 'required|email|max:255',
+             'userPhone' => 'nullable|string|max:20',
+             'userDepartment' => 'required|string|max:255',
+             'userRole' => 'required|string|max:50',
+             'userStatus' => 'required|string|in:active,inactive',
+             'userPicture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+         ]);
+ 
+         // Update user information
+         $user->name = $validatedData['userFullname'];
+         $user->email = $validatedData['userEmail'];
+         $user->phone = $validatedData['userPhone'];
+         $user->department = $validatedData['userDepartment'];
+         $user->role = $validatedData['userRole'];
+         $user->status = $validatedData['userStatus'];
+ 
+         // Handle profile picture upload if there's a new picture
+         if ($request->hasFile('userPicture')) {
+             // Store the image and get the path
+             $imagePath = $request->file('userPicture')->store('profile_pictures', 'public');
+ 
+             // Save the image path in the database
+             $user->profile_picture = $imagePath;
+         }
+ 
+         // Save updated user information
+         $user->save();
+ 
+         // Redirect back with a success message
+         return redirect()->back()->with('success', 'User updated successfully');
+     }
+
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
-        //
+        
     }
 }
