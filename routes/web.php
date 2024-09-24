@@ -23,7 +23,7 @@ Route::get('/', function () {
 Route::resource('categories', CategoryController::class);
 Route::resource('products', ProductController::class);
 Route::resource('users', UserController::class);
-Route::get('users/list', [UserController::class, 'getUsers'])->name('users.list');
+
 
 
 

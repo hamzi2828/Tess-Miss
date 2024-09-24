@@ -17,44 +17,11 @@ class UserController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-<<<<<<< Updated upstream
-    {
-    
-        // Render the view and pass the users to the front end
-        return view('pages.users.users-list');
-    }
-    
-
-
-    public function getUsers()
-    {
-        // Fetch users from the database
-        $users = User::all();
-    
-        // Ensure the directory exists
-        if (!is_dir(public_path('assets/json'))) {
-            mkdir(public_path('assets/json'), 0755, true); // Create the directory if it doesn't exist
-        }
-    
-        // Define the JSON file path
-        $jsonFilePath = public_path('assets/json/user-list.json');
-        
-        // Write the data to the JSON file with error handling
-        $result = file_put_contents($jsonFilePath, json_encode(['data' => $users], JSON_PRETTY_PRINT), LOCK_EX);
-    
-        if ($result === false) {
-            return response()->json(['error' => 'Failed to write to the JSON file'], 500);
-        }
-    
-        // Optionally return the users as JSON response
-        return response()->json(['data' => $users]);
-=======
     {  
         $users = User::all();
         
         // Render the view and pass the users to the front end
         return view('pages.users.users-list', compact('users'));
->>>>>>> Stashed changes
     }
     
     
@@ -66,11 +33,7 @@ class UserController extends Controller
      */
     public function create()
     {
-<<<<<<< Updated upstream
-       
-=======
         
->>>>>>> Stashed changes
     }
 
     /**
