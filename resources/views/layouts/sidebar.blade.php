@@ -25,9 +25,6 @@
             <div data-i18n="Dashboard">Dashboard</div>
           </a>
 
-
-
-
         </li>
 
 
@@ -76,7 +73,20 @@
         </ul>
       </li>
       
-
+      <li class="menu-item">
+        <a href="javascript:void(0);" class="menu-link menu-toggle">
+          <i class="menu-icon tf-icons ti ti-briefcase"></i> <!-- Changed icon to represent services -->
+          <div data-i18n="Services">Services</div> <!-- Changed label to Services -->
+        </a>
+        <ul class="menu-sub">
+          <li class="menu-item">
+            <a href="{{ route('services.index') }}" class="menu-link"> 
+              <div data-i18n="All-Services">All Services</div> <!-- Changed inner label to All Services -->
+            </a>
+          </li>
+        </ul>
+      </li>
+      
     </ul>
   </aside>
   <!-- / Menu -->

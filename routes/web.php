@@ -6,6 +6,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DocumentsController;
+use App\Http\Controllers\ServicesController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -27,6 +28,7 @@ Route::resource('products', ProductController::class);
 Route::resource('users', UserController::class);
 Route::resource('departments', DepartmentController::class);
 Route::resource('documents', DocumentsController::class);
+Route::resource('services', ServicesController::class);
 
 
 
