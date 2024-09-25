@@ -47,4 +47,20 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    // Relationship to get departments supervised by the user
+    public function supervisedDepartments()
+    {
+        return $this->hasMany(Department::class, 'supervisor_id');
+    }
+
+    // Relationship to get departments added by the user
+    public function addedDepartments()
+    {
+        return $this->hasMany(Department::class, 'added_by');
+    }
+    
 }
+
+

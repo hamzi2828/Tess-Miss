@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\DocumentsController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,6 +25,8 @@ Route::get('/', function () {
 Route::resource('categories', CategoryController::class);
 Route::resource('products', ProductController::class);
 Route::resource('users', UserController::class);
+Route::resource('departments', DepartmentController::class);
+Route::resource('documents', DocumentsController::class);
 
 
 

@@ -42,15 +42,40 @@
         <ul class="menu-sub">
           <li class="menu-item">
             <a href="{{ route('users.index') }}" class="menu-link">
-              <div data-i18n="List">List</div>
+              <div data-i18n="All-Users">All Users</div>
             </a>
           </li>
-
-      
         </ul>
       </li>
-  
 
+      <li class="menu-item">
+        <a href="javascript:void(0);" class="menu-link menu-toggle">
+          <i class="menu-icon tf-icons ti ti-building"></i> <!-- Changed icon to represent department -->
+          <div data-i18n="Departments">Departments</div> <!-- Changed label to Departments -->
+        </a>
+        <ul class="menu-sub">
+          <li class="menu-item">
+            <a href="{{ route('departments.index') }}" class="menu-link"> 
+              <div data-i18n="All-Departments">All Departments</div> <!-- Changed inner label to List -->
+            </a>
+          </li>
+        </ul>
+      </li>
+      
+      <li class="menu-item">
+        <a href="javascript:void(0);" class="menu-link menu-toggle">
+          <i class="menu-icon tf-icons ti ti-file"></i> 
+          <div data-i18n="Documents">Documents</div>
+        </a>
+        <ul class="menu-sub">
+          <li class="menu-item">
+            <a href="{{ route('documents.index') }}" class="menu-link">
+              <div data-i18n="All-Documents">All Documents</div> 
+            </a>
+          </li>
+        </ul>
+      </li>
+      
 
     </ul>
   </aside>
