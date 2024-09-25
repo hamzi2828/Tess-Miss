@@ -101,6 +101,21 @@
         </ul>
     </li>
     
+    <li class="menu-item">
+      <a href="javascript:void(0);" class="menu-link menu-toggle">
+          <i class="menu-icon tf-icons ti ti-world"></i> <!-- Changed icon to represent country -->
+          <div data-i18n="Country">Country</div> <!-- Changed label to Country -->
+      </a>
+      <ul class="menu-sub">
+          <li class="menu-item">
+              <a href="{{ route('countries.index') }}" class="menu-link"> 
+                  <div data-i18n="All-Countries">All Countries</div> <!-- Changed inner label to All Countries -->
+              </a>
+          </li>
+      </ul>
+  </li>
+
+  
     </ul>
   </aside>
   <!-- / Menu -->
