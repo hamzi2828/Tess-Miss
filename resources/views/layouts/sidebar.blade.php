@@ -87,6 +87,20 @@
         </ul>
       </li>
       
+      <li class="menu-item">
+        <a href="javascript:void(0);" class="menu-link menu-toggle">
+            <i class="menu-icon tf-icons ti ti-tag"></i> <!-- Changed icon to represent categories -->
+            <div data-i18n="Merchant-Categories">Merchant Categories</div> <!-- Changed label to Merchant Categories -->
+        </a>
+        <ul class="menu-sub">
+            <li class="menu-item">
+                <a href="{{ route('merchant-categories.index') }}" class="menu-link"> 
+                    <div data-i18n="All-Merchant-Categories">All Merchant Categories</div> <!-- Changed inner label to All Merchant Categories -->
+                </a>
+            </li>
+        </ul>
+    </li>
+    
     </ul>
   </aside>
   <!-- / Menu -->
