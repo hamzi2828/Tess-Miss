@@ -9,6 +9,7 @@ use App\Http\Controllers\DocumentsController;
 use App\Http\Controllers\ServicesController;
 use App\Http\Controllers\MerchantCategoriesController;
 use App\Http\Controllers\CountryController;
+use App\Http\Controllers\MerchantsController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -33,6 +34,7 @@ Route::resource('documents', DocumentsController::class);
 Route::resource('services', ServicesController::class);
 Route::resource('merchant-categories', MerchantCategoriesController::class);
 Route::resource('countries', CountryController::class);
+Route::resource('merchants', MerchantsController::class);
 
 
 

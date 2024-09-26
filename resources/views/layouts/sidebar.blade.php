@@ -30,7 +30,21 @@
 
       </li>
       <!-- e-commerce-app menu end -->
+      <li class="menu-item">
+        <a href="javascript:void(0);" class="menu-link menu-toggle">
+            <i class="menu-icon tf-icons ti ti-users"></i> <!-- Changed icon to represent merchants -->
+            <div data-i18n="Merchants">Merchants</div> <!-- Changed label to Merchants -->
+        </a>
+        <ul class="menu-sub">
+            <li class="menu-item">
+                <a href="{{ route('merchants.index') }}" class="menu-link"> 
+                    <div data-i18n="All-Merchants">All Merchants</div> <!-- Changed inner label to All Merchants -->
+                </a>
+            </li>
+        </ul>
+    </li>
 
+    
       <li class="menu-item">
         <a href="javascript:void(0);" class="menu-link menu-toggle">
           <i class="menu-icon tf-icons ti ti-users"></i>
@@ -115,7 +129,8 @@
       </ul>
   </li>
 
-  
+
+
     </ul>
   </aside>
   <!-- / Menu -->
