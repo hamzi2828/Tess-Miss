@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Merchant;
 use App\Models\MerchantCategory;
 use App\Models\Document;
-use App\Models\MerchantSales;
+use App\Models\MerchantsService;
 use App\Models\Service;
 
 use Illuminate\Http\Request;
@@ -51,10 +51,36 @@ class MerchantsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        //
-    }
+
+     public function store(Request $request)
+     {
+         
+     }
+
+     public function store_merchants_kyc(Request $request)
+     {
+
+
+     }
+
+     public function store_merchants_documents(Request $request)
+     {
+
+
+     }
+
+     public function store_merchants_sales(Request $request)
+     {
+
+
+     }
+
+     public function store_merchants_services(Request $request)
+     {
+         
+     }
+
+ 
 
     /**
      * Display the specified resource.
