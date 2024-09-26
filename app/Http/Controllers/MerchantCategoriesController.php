@@ -24,7 +24,7 @@ class MerchantCategoriesController extends Controller
         $categories = $this->merchantCategoriesService->getAll();
 
         // Pass the categories data to the view
-        return view('pages.MerchantCategories.MerchantCategories-list', compact('categories'));
+        return view('pages.merchantCategories.merchantCategories-list', compact('categories'));
     }
 
     /**
