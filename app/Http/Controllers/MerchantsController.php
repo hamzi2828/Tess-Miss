@@ -1,6 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Merchant;
+use App\Models\MerchantCategory;
+use App\Models\Document;
+use App\Models\MerchantSales;
+use App\Models\Service;
 
 use Illuminate\Http\Request;
 
@@ -19,22 +24,29 @@ class MerchantsController extends Controller
      */
     public function create_merchants_kfc()
     {
-        return view('pages.merchants.create-merchants');
-
+        $title = 'Create Merchants KYC'; // You can set your title here
+        return view('pages.merchants.create-merchants', compact('title'));
     }
+    
     
     public function create_merchants_documents()
     {
-        return view('pages.merchants.create-merchants-documents');
+        $merchant_documents = Document::all();
+        $title = 'Create Merchants Documents'; // You can set your title here
+        return view('pages.merchants.create-merchants-documents', compact('merchant_documents', 'title'));
     }
+    
 
     public  function create_merchants_sales(){
 
-        return view('pages.merchants.create-merchants-sales');
+        $title = 'Create Merchants Sales';
+        return view('pages.merchants.create-merchants-sales', compact('title'));
     }
 
     public  function create_merchants_services(){
-        return view('pages.merchants.create-merchants-services');
+        $services = Service::all();
+        $title = 'Create Merchants Services';
+        return view('pages.merchants.create-merchants-services', compact('services', 'title'));
     }
     /**
      * Store a newly created resource in storage.

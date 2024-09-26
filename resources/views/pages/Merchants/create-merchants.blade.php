@@ -5,102 +5,6 @@
 <!-- Include Font Awesome for Icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
-<style>
-    /* Styling for the form */
-    .kyc-form {
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    }
-
-    /* Section headers */
-    .form-section h4 {
-        font-size: 1.2rem;
-        color: #007BFF;
-        font-weight: 600;
-        border-bottom: 2px solid #007BFF;
-        padding-bottom: 5px;
-    }
-
-    /* Labels and inputs */
-    .form-label {
-        font-weight: 500;
-        color: #333;
-    }
-
-    .form-control {
-        border-radius: 5px;
-        border: 1px solid #ced4da;
-    }
-
-    /* Add some margin between form sections */
-    .form-section {
-        margin-bottom: 30px;
-    }
-
-    .box-container {
-        background-color: #fff;
-        padding: 20px;
-        border: 1px solid #dee2e6;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        margin-bottom: 20px;
-    }
-
-    .remove-btn {
-        margin-top: 25px;
-    }
-    .required-asterisk {
-    color: red;
-    font-weight: bold;
-    font-size: 1.2em; /* Adjust the size as needed */
-    }
-
-
-    /* Responsive design */
-    @media (max-width: 768px) {
-        .form-section h4 {
-            font-size: 1.1rem;
-        }
-
-        button.btn {
-            width: 100%;
-            font-size: 1rem;
-        }
-    }
-
- 
-    
-
-
-/* Line between steps */
-
-.step:last-child:before {
-    content: none;
-}
-
-.step:first-child:before {
-    display: none;
-}
-
-/* Responsive behavior */
-@media (max-width: 768px) {
-    .step-container {
-        flex-direction: column;
-    }
-
-    .step {
-        margin-bottom: 20px;
-    }
-
-    .step:before {
-        display: none;
-    }
-}
-
-
-</style>
     
 <div class="container-xxl flex-grow-1 container-p-y">
  
@@ -108,9 +12,7 @@
     <form class="kyc-form">
         <!-- Basic Details Section -->
         <div class="form-section box-container">
-            <div class="header text-center mb-4" style="background-color: #007bff; padding:2px; border-radius: 8px; ">
-                <h2 style="color: white;">Merchant KYC</h2>
-            </div>
+            
             
               <!-- Step-based Progress Bar -->
               @include('pages.merchants.components.progressBar')
