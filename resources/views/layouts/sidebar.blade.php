@@ -41,6 +41,12 @@
                     <div data-i18n="All-Merchants">All Merchants</div> <!-- Changed inner label to All Merchants -->
                 </a>
             </li>
+
+            <li class="menu-item">
+              <a href="{{ route('create.merchants.kfc') }}" class="menu-link"> 
+                  <div data-i18n="Create-Merchants">Create Merchants</div> 
+              </a>
+          </li>
         </ul>
     </li>
 

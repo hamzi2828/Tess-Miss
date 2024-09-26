@@ -17,11 +17,25 @@ class MerchantsController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create_merchants_kfc()
     {
-        //
+        return view('pages.merchants.create-merchants');
+
+    }
+    
+    public function create_merchants_documents()
+    {
+        return view('pages.merchants.create-merchants-documents');
     }
 
+    public  function create_merchants_sales(){
+
+        return view('pages.merchants.create-merchants-sales');
+    }
+
+    public  function create_merchants_services(){
+        return view('pages.merchants.create-merchants-services');
+    }
     /**
      * Store a newly created resource in storage.
      */

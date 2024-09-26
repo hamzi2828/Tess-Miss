@@ -35,6 +35,11 @@ Route::resource('services', ServicesController::class);
 Route::resource('merchant-categories', MerchantCategoriesController::class);
 Route::resource('countries', CountryController::class);
 Route::resource('merchants', MerchantsController::class);
+Route::get('/merchantskyc', [MerchantsController::class, 'create_merchants_kfc'])->name('create.merchants.kfc');
+Route::get('/merchantsdocuments', [MerchantsController::class, 'create_merchants_documents'])->name('create.merchants.documents');
+Route::get('/merchantsSales', [MerchantsController::class, 'create_merchants_sales'])->name('create.merchants.sales');
+Route::get('/merchantService', [MerchantsController::class, 'create_merchants_services'])->name('create.merchants.services.form');
+
 
 
 

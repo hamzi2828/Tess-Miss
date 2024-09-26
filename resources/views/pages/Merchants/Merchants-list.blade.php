@@ -9,9 +9,9 @@
                 <h4 class="fw-bold">Merchants</h4>
                 <div class="d-flex col-lg-5">
                     <input type="text" id="customMerchantSearch" class="form-control me-2" placeholder="Search merchants" onkeyup="filterTable()"> <!-- Changed to customMerchantSearch -->
-                    <button class="btn btn-primary btn-lg" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAddMerchant" style="width: 337px;"> <!-- Changed to #offcanvasAddMerchant -->
-                        <i class="ti ti-plus me-1"></i> Add Merchants
-                    </button>
+                 
+                
+                    
                 </div>
             </div>
 
@@ -94,11 +94,6 @@
                 </div>
             </div>
 
-            {{-- Create Merchant Modal --}}
-            {{-- @include('pages.merchants.create-modal') --}}
-
-            {{-- Edit Merchant Modal --}}
-            {{-- @include('pages.merchants.edit-modal') --}}
         </div>
     </div>
 
