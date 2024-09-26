@@ -113,7 +113,7 @@
             </div>
             
               <!-- Step-based Progress Bar -->
-              @include('pages.Merchants.components.progressBar')
+              @include('pages.merchants.components.progressBar')
 
             
             <h4 class="mb-3">Basic Details</h4>

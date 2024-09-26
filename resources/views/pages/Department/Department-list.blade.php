@@ -72,10 +72,10 @@
             </div>
 
             {{-- Create Department Modal --}}
-            @include('pages.Department.Department-create-modal')
+            @include('pages.department.department-create-modal')
 
             {{-- Edit Department Modal --}}
-            @include('pages.Department.Department-edit-modal')
+            @include('pages.department.department-edit-modal')
         </div>
     </div>
 

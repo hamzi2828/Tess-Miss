@@ -71,10 +71,10 @@
             </div>
 
             {{-- Create Category Modal --}}
-            @include('pages.MerchantCategories.MerchantCategory-create-modal')
+            @include('pages.merchantCategories.merchantCategory-create-modal')
 
             {{-- Edit Category Modal --}}
-            @include('pages.MerchantCategories.MerchantCategory-edit-modal')
+            @include('pages.merchantCategories.merchantCategory-edit-modal')
         </div>
     </div>
 

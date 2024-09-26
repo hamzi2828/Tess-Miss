@@ -76,7 +76,7 @@
             </div>
 
             {{-- Create Document Modal --}}
-            @include('pages.Documents.document-create-modal')
+            @include('pages.documents.document-create-modal')
 
             {{-- Edit Document Modal --}}
             @include('pages.documents.document-edit-modal')
