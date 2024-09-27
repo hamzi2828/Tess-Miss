@@ -3,14 +3,24 @@
 namespace App\Http\Controllers;
 use App\Models\Merchant;
 use App\Models\MerchantCategory;
+use App\Models\MerchantDocument;
 use App\Models\Document;
-use App\Models\MerchantsService;
 use App\Models\Service;
+use App\Models\Country;
+use App\Models\MerchantShareholder;
+use App\Services\MerchantsServiceService;
 
 use Illuminate\Http\Request;
 
 class MerchantsController extends Controller
 {
+
+    protected $merchantsService;
+
+    public function __construct(MerchantsServiceService $merchantsService)
+    {
+        $this->merchantsService = $merchantsService;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -24,8 +34,12 @@ class MerchantsController extends Controller
      */
     public function create_merchants_kfc()
     {
-        $title = 'Create Merchants KYC'; // You can set your title here
-        return view('pages.merchants.create-merchants', compact('title'));
+        $title = 'Create Merchants KYC'; 
+        $MerchantCategory = MerchantCategory::all();
+        $Country = Country::all();
+        // dd($Country->toArray());
+
+        return view('pages.merchants.create-merchants', compact('title', 'MerchantCategory', 'Country'));
     }
     
     
@@ -59,15 +73,76 @@ class MerchantsController extends Controller
 
      public function store_merchants_kyc(Request $request)
      {
-
-
+         // Validate the request
+         $validatedData  = $request->validate([
+             'merchant_name' => 'required|string|max:255',
+             'date_of_incorporation' => 'required|date',
+             'merchant_arabic_name' => 'required|string|max:255',
+             'company_registration' => 'required|string|max:255',
+             'company_address' => 'required|string',
+             'mobile_number' => 'required|string|max:15',
+             'company_activities' => 'required|integer',
+             'landline_number' => 'required|string|max:15',
+             'website' => 'nullable|url',
+             'email' => 'required|email',
+             'monthly_website_visitors' => 'nullable|integer',
+             'key_point_of_contact' => 'required|string',
+             'monthly_active_users' => 'nullable|integer',
+             'key_point_mobile' => 'required|string|max:15',
+             'monthly_avg_volume' => 'nullable|integer',
+             'existing_banking_partner' => 'nullable|string',
+             'monthly_avg_transactions' => 'required|integer',
+             'shareholderName.*' => 'required|string|max:255',
+             'shareholderNationality.*' => 'required|integer',
+             'shareholderID.*' => 'nullable|string|max:255',
+         ]);
+         
+         // Use the service to handle merchant creation
+         $this->merchantsService->createMerchants($validatedData);
+ 
+         // Redirect with a success message
+         return redirect()->route('merchants.index')->with('success', 'Merchant and Shareholders successfully added.');
      }
+     
 
      public function store_merchants_documents(Request $request)
      {
-
-
+         $validatedData = $request->validate([
+             'document_*' => 'required|file|mimes:jpg,jpeg,png,pdf,doc,docx,xls,xlsx|max:2048',
+             'expiry_*' => 'nullable|date',
+         ]);
+     
+         $merchant_id = 7; 
+     
+         foreach ($request->all() as $key => $value) {
+             if (strpos($key, 'document_') === 0) {
+                 $document_id = str_replace('document_', '', $key);
+     
+                 if ($request->hasFile($key)) {
+                     $file = $request->file($key);
+                     $fileName = time() . '_' . $file->getClientOriginalName();
+                     $filePath = $file->storeAs('public/documents', $fileName);
+     
+                     $expiryDateKey = 'expiry_' . $document_id;
+                     $expiryDate = $request->input($expiryDateKey, null);
+     
+                     MerchantDocument::create([
+                         'title' => $file->getClientOriginalName(),
+                         'document' => $filePath,
+                         'date_expiry' => $expiryDate,
+                         'merchant_id' => $merchant_id,
+                         'added_by' => auth()->user()->id ?? 1,
+                         'document_type' => $file->getClientMimeType(),
+                         'emailed' => false,
+                         'status' => true,
+                     ]);
+                 }
+             }
+         }
+     
+         return redirect()->route('merchants.index')->with('success', 'Documents uploaded and saved successfully.');
      }
+     
 
      public function store_merchants_sales(Request $request)
      {

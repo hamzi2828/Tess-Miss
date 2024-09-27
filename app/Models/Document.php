@@ -27,5 +27,9 @@ class Document extends Model
         return $this->belongsTo(User::class, 'added_by');
     }
 
-    // You can add additional relationships or helper methods here as needed
+       // Relationship with MerchantDocument model for the previous documents
+       public function merchantDocuments()
+       {
+           return $this->hasMany(MerchantDocument::class, 'previous_doc_id');
+       }
 }

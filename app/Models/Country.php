@@ -19,8 +19,12 @@ class Country extends Model
         'country_status'
     ];
 
-    // You can define relationships here if needed, for example, if a country has states, users, etc.
-    // public function states() {
-    //     return $this->hasMany(State::class);
-    // }
+    /**
+     * Define the relationship with the MerchantShareholder model.
+     * A country can have many shareholders.
+     */
+    public function shareholders()
+    {
+        return $this->hasMany(MerchantShareholder::class, 'country');
+    }
 }

@@ -34,4 +34,13 @@ class MerchantCategory extends Model
     {
         return $this->belongsTo(User::class, 'added_by');
     }
+
+    /**
+     * Relationship to the Merchant model.
+     * A category can have many merchants.
+     */
+    public function merchants()
+    {
+        return $this->hasMany(Merchant::class, 'merchant_category');
+    }
 }
