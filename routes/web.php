@@ -40,8 +40,9 @@ Route::Post('/store/merchantskyc', [MerchantsController::class, 'store_merchants
 Route::get('/merchantsdocuments', [MerchantsController::class, 'create_merchants_documents'])->name('create.merchants.documents');
 Route::Post('/store/merchantsdocuments', [MerchantsController::class, 'store_merchants_documents'])->name('store.merchants.documents');
 Route::get('/merchantsSales', [MerchantsController::class, 'create_merchants_sales'])->name('create.merchants.sales');
+Route::Post('/store/merchantsSales', [MerchantsController::class, 'store_merchants_sales'])->name('store.merchants.sales');
 Route::get('/merchantService', [MerchantsController::class, 'create_merchants_services'])->name('create.merchants.services.form');
-
+Route::Post('/store/merchantService', [MerchantsController::class, 'store_merchants_services'])->name('store.merchants.services');
 
 
 

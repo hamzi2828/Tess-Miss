@@ -8,7 +8,8 @@
 
     
 <div class="container-xxl flex-grow-1 container-p-y">
-    <form class="kyc-form">
+    <form class="kyc-form" action="{{ route('store.merchants.sales') }}" method="POST" >
+        @csrf
         <!-- Sales Data Section -->
         <div class="form-section box-container">
            

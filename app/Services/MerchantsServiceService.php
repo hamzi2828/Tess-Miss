@@ -3,7 +3,11 @@
 namespace App\Services;
 
 use App\Models\Merchant;
+use App\Models\MerchantCategory;
+use App\Models\MerchantDocument;
+use App\Models\MerchantSale;
 use App\Models\MerchantShareholder;
+use App\Models\MerchantService;
 use Illuminate\Support\Facades\Auth;
 
 class MerchantsServiceService
@@ -65,6 +69,48 @@ class MerchantsServiceService
             $shareholder->added_by = Auth::user()->id ?? 1; 
             $shareholder->status = 'active'; 
             $shareholder->save();
+        }
+    }
+
+    public function storeMerchantsSales(array $data): MerchantSale
+    {
+        $merchant_id = 7;  // Example merchant ID, replace with dynamic value if needed
+     
+         // Step 2: Create a new MerchantSale record using validated data
+         $merchantSale = new MerchantSale();
+         $merchantSale->merchant_id = $merchant_id;
+         $merchantSale->min_transaction_amount = $data['minTransactionAmount'];
+         $merchantSale->max_transaction_amount = $data['maxTransactionAmount'];
+         $merchantSale->daily_limit_amount = $data['dailyLimitAmount'];
+         $merchantSale->monthly_limit_amount = $data['monthlyLimitAmount'];
+         $merchantSale->max_transaction_count = $data['maxTransactionCount'];
+         $merchantSale->added_by = auth()->user()->id ?? 1;  // Use the authenticated user, default to 1 if not available
+     
+         // Save the merchant sale record
+         $merchantSale->save();
+         return $merchantSale;
+
+    }
+
+
+    public function storeMerchantsServices(array $data, int $merchant_id)
+    {
+        // Step 1: Iterate over the services and save each field in the merchant_services table
+        foreach ($data['services'] as $service_id => $serviceData) {
+            // Get the fields for this service
+            $fields = $serviceData['fields'];
+            
+            // Save each field
+            foreach ($fields as $index => $fieldValue) {
+                MerchantService::create([
+                    'merchant_id' => $merchant_id,
+                    'service_id' => $service_id,
+                    'field_name' => 'Field ' . $index, 
+                    'field_value' => $fieldValue,
+                    'added_by' => Auth::user()->id ?? 1, 
+                    'status' => true, 
+                ]);
+            }
         }
     }
 }
