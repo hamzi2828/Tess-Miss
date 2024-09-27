@@ -12,6 +12,12 @@ use Illuminate\Support\Facades\Auth;
 
 class MerchantsServiceService
 {
+
+    public function getAllMerchants(): array
+    {
+        return Merchant::with(['sales', 'services', 'shareholders', 'documents'])->get()->toArray();
+    }
+    
     /**
      * Create a new merchant along with its shareholders.
      * 

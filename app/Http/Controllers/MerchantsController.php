@@ -25,10 +25,12 @@ class MerchantsController extends Controller
     }
     /**
      * Display a listing of the resource.
-     */
+     */ 
     public function index()
     {
-        return view('pages.merchants.merchants-list');
+        // Retrieve all merchants using service layer
+        $merchants = $this->merchantsService->getAllMerchants();
+        return view('pages.merchants.merchants-list', compact('merchants'));
     }
 
     /**
@@ -202,7 +204,8 @@ class MerchantsController extends Controller
      */
     public function edit(string $id)
     {
-        //
+         $merchant_details = Merchant::with(['sales', 'services', 'shareholders', 'documents'])->get()->where('id', $id);
+            dd($merchant_details);
     }
 
     /**

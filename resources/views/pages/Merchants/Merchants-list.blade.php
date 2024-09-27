@@ -9,9 +9,6 @@
                 <h4 class="fw-bold">Merchants</h4>
                 <div class="d-flex col-lg-5">
                     <input type="text" id="customMerchantSearch" class="form-control me-2" placeholder="Search merchants" onkeyup="filterTable()"> <!-- Changed to customMerchantSearch -->
-                 
-                
-                    
                 </div>
             </div>
 
@@ -21,7 +18,6 @@
                         <thead>
                             <tr>
                                 <th>S.No</th>
-                                <th>Picture</th> <!-- Added Picture column -->
                                 <th>Merchant</th>
                                 <th>Registration Date</th>
                                 <th>Current Status</th>
@@ -30,66 +26,47 @@
                                 <th class="text-lg-center">Actions</th>
                             </tr>
                         </thead>
-                        {{-- <tbody>
+                        <tbody>
                             @php $i = 1; @endphp
                             @foreach($merchants as $merchant)
                             <tr>
                                 <td>{{ $i++ }}</td>
+                                <td>{{ $merchant['merchant_name'] }}</td>
+                                <td>{{ \Carbon\Carbon::parse($merchant['merchant_date_incorp'])->format('Y-m-d') }}</td>
                                 <td>
-                                    <div class="d-flex align-items-center">
-                                        @if($merchant->picture)
-                                            <img src="{{ asset('storage/' . $merchant->picture) }}" alt="Avatar" class="rounded-circle me-2" style="width: 50px; height: 50px;">
-                                        @else
-                                            @php
-                                                $initials = strtoupper(substr($merchant->name, 0, 2));
-                                                $stateNum = rand(0, 5);
-                                                $states = ['success', 'danger', 'warning', 'info', 'primary', 'secondary'];
-                                                $state = $states[$stateNum];
-                                            @endphp
-                                            <span class="avatar-initial rounded-circle bg-label-{{ $state }} me-2" style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;">
-                                                {{ $initials }}
-                                            </span>
-                                        @endif
-                                    </div>
-                                </td>
-                                <td>{{ $merchant->name }}</td>
-                                <td>{{ $merchant->registration_date }}</td>
-                                <td>
-                                    @if($merchant->status == 'active')
+                                    @if($merchant['status'] == 'active')
                                         <span class="badge bg-success">Active</span>
                                     @else
                                         <span class="badge bg-danger">Inactive</span>
                                     @endif
                                 </td>
-                                <td>{{ $merchant->added_by }}</td>
-                                <td>{{ $merchant->approved_by }}</td>
+                                <td>{{ $merchant['added_by_kyc'] }}</td>
+                                <td>{{ $merchant['approved_by_kyc'] ?? 'Not Approved' }}</td>
                                 <td class="text-lg-center">
                                     <div class="d-flex justify-content-center align-items-center">
-                                      <button class="btn btn-icon btn-text-secondary rounded-pill waves-effect waves-light mx-1 edit-merchant-btn"
-                                        data-bs-toggle="offcanvas" 
-                                        data-bs-target="#offcanvasEditMerchant" 
-                                        data-id="{{ $merchant->id }}"
-                                        data-name="{{ $merchant->name }}"
-                                        data-registration_date="{{ $merchant->registration_date }}"
-                                        data-status="{{ $merchant->status }}"
-                                        data-added_by="{{ $merchant->added_by }}"
-                                        data-approved_by="{{ $merchant->approved_by }}">
-                                        <i class="ti ti-edit"></i>
-                                    </button>
 
-                                        <form action="{{ route('merchants.destroy', $merchant->id) }}" method="POST" style="display: inline-block;">
+
+                                        <form action="{{ route('merchants.edit', $merchant['id']) }}" method="GET" style="display: inline-block;">
+                                            @csrf
+                                            <button type="submit" class="btn btn-icon btn-text-secondary rounded-pill waves-effect waves-light mx-1">
+                                                <i class="ti ti-edit"></i>
+                                            </button>
+                                        </form>
+                                        
+                        
+                                        <form action="{{ route('merchants.destroy', $merchant['id']) }}" method="POST" style="display: inline-block;">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-icon btn-text-secondary rounded-pill waves-effect waves-light mx-1">
                                                 <i class="ti ti-trash"></i>
                                             </button>
                                         </form>
-                                      
                                     </div>
                                 </td>
                             </tr>
                             @endforeach
-                        </tbody> --}}
+                        </tbody>
+                        
                     </table>
                 </div>
             </div>

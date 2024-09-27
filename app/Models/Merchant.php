@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -65,8 +64,24 @@ class Merchant extends Model
         'max_tran_count' => 'integer',
     ];
 
-    public function category()
+    // Define the relationships // Define the relationship with MerchantSale
+    public function sales()
     {
-        return $this->belongsTo(MerchantCategory::class, 'merchant_category');
+        return $this->hasMany(MerchantSale::class, 'merchant_id');
+    }
+
+    public function services()
+    {
+        return $this->hasMany(MerchantService::class, 'merchant_id');
+    }
+
+    public function shareholders()
+    {
+        return $this->hasMany(MerchantShareholder::class, 'merchant_id');
+    }
+
+    public function documents()
+    {
+        return $this->hasMany(MerchantDocument::class, 'merchant_id');
     }
 }
