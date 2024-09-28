@@ -46,7 +46,7 @@
                                     <div class="d-flex justify-content-center align-items-center">
 
 
-                                        <form action="{{ route('edit.merchants.kyc') }}" method="GET" style="display: inline-block;">
+                                        <form action="{{ route('edit.merchants.services') }}" method="GET" style="display: inline-block;">
                                             @csrf
                                             <input type="hidden" name="merchant_id" value="{{ $merchant['id'] }}">
                                             <button type="submit" class="btn btn-icon btn-text-secondary rounded-pill waves-effect waves-light mx-1">

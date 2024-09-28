@@ -6,14 +6,14 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
 <div class="container-xxl flex-grow-1 container-p-y">
-    <form class="kyc-form" action="{{ route('store.merchants.documents') }}" method="POST" enctype="multipart/form-data">
+    <form class="kyc-form" action="{{ route('store.merchants.documents',['merchant_id' => request()->merchant_id]) }}" method="POST" enctype="multipart/form-data">
         @csrf
 
         <!-- Basic Details Section -->
         <div class="form-section box-container">
 
             <!-- Step-based Progress Bar -->
-            @include('pages.merchants.components.progressBar')
+            @include('pages.merchants.components.edit-progressBar')
 
             <!-- Document Fields -->
             <h4 class="mb-3">Documents</h4>

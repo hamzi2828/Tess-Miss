@@ -121,21 +121,21 @@
     </div>
 
     <div class="step {{ Route::currentRouteName() == 'create.merchants.documents' ? 'active' : '' }}">
-        <a href="{{ route('create.merchants.documents') }}">
+        <a href="#">
            <div class="step-number">2</div>
            <div class="step-title">Documents</div>
         </a>
     </div>
 
     <div class="step {{ Route::currentRouteName() == 'create.merchants.sales' ? 'active' : '' }}">
-        <a href="{{ route('create.merchants.sales') }}">
+        <a href="#">
            <div class="step-number">3</div>
            <div class="step-title">Sales</div>
         </a>
     </div>
 
-    <div class="step {{ Route::currentRouteName() == 'create.merchants.services.form' ? 'active' : '' }}">
-        <a href="{{ route('create.merchants.services.form') }}">
+    <div class="step {{ Route::currentRouteName() == 'create.merchants.services' ? 'active' : '' }}">
+        <a href="#">
            <div class="step-number">4</div>
            <div class="step-title">Services</div>
         </a>

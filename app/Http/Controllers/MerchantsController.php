@@ -43,7 +43,7 @@ class MerchantsController extends Controller
         $Country = Country::all();
         // dd($Country->toArray());
 
-        return view('pages.merchants.create-merchants', compact('title', 'MerchantCategory', 'Country'));
+        return view('pages.merchants.create.create-merchants', compact('title', 'MerchantCategory', 'Country'));
     }
     
     
@@ -51,20 +51,20 @@ class MerchantsController extends Controller
     {
         $merchant_documents = Document::all();
         $title = 'Create Merchants Documents'; // You can set your title here
-        return view('pages.merchants.create-merchants-documents', compact('merchant_documents', 'title'));
+        return view('pages.merchants.create.create-merchants-documents', compact('merchant_documents', 'title'));
     }
     
 
     public  function create_merchants_sales(){
 
         $title = 'Create Merchants Sales';
-        return view('pages.merchants.create-merchants-sales', compact('title'));
+        return view('pages.merchants.create.create-merchants-sales', compact('title'));
     }
 
     public  function create_merchants_services(){
         $services = Service::all();
         $title = 'Create Merchants Services';
-        return view('pages.merchants.create-merchants-services', compact('services', 'title'));
+        return view('pages.merchants.create.create-merchants-services', compact('services', 'title'));
     }
     /**
      * Store a newly created resource in storage.
@@ -115,8 +115,8 @@ class MerchantsController extends Controller
              'document_*' => 'required|file|mimes:jpg,jpeg,png,pdf,doc,docx,xls,xlsx|max:2048',
              'expiry_*' => 'nullable|date',
          ]);
-     
-         $merchant_id = 7; 
+
+         $merchant_id = $request->input('merchant_id');
      
          foreach ($request->all() as $key => $value) {
              if (strpos($key, 'document_') === 0) {
@@ -158,8 +158,8 @@ class MerchantsController extends Controller
              'maxTransactionCount' => 'required|integer',
              'dailyLimitAmount' => 'required|numeric',
          ]);
-     
-         $this->merchantsService->storeMerchantsSales($validatedData);
+         $merchant_id = $request->input('merchant_id');
+         $this->merchantsService->storeMerchantsSales($validatedData, $merchant_id);
 
  
      
@@ -178,7 +178,7 @@ class MerchantsController extends Controller
              'services.*.fields.*' => 'required|string',
          ]);
      
-         $merchant_id = 7; // Example merchant ID, replace with dynamic value if needed
+         $merchant_id = $request->input('merchant_id');
      
          // Step 2: Use the service to save the merchant services data
          $this->merchantsService->storeMerchantsServices($validatedData, $merchant_id);
@@ -219,17 +219,17 @@ class MerchantsController extends Controller
         $title = 'Edit Merchants Details';
 
         $id = $request->input('merchant_id'); 
-        $merchant_details = Merchant::with(['documents'])->where('id', $id)->first();
+        $merchant_details = Merchant::with(['documents', 'sales', 'services', 'shareholders'])->where('id', $id)->first();
 
-        if ($merchant_details->documents->isEmpty()) {
-            return redirect()->route('edit.merchants.kyc', ['merchant_id' => $id])
-                            ->with('error', 'No documents found for this merchant.')->withInput($request->all());
+        if ($merchant_details && $merchant_details->documents->isEmpty() ) {
+            return redirect()->route('create.merchants.documents', ['merchant_id' => $id])
+            ->with('error', 'No Sales found for this merchant.')->withInput($request->all());
+        }
+        else {
+            return view('pages.merchants.edit.edit-merchants-documents', compact('merchant_details', 'title'));
+
         }
 
- 
-       
-    
-        return view('pages.merchants.edit.edit-merchants-documents', compact('merchant_details', 'title'));
     }
     
 
@@ -239,15 +239,15 @@ class MerchantsController extends Controller
         $id = $request->input('merchant_id'); 
        
         $title = 'Edit Merchants Sales';
-        $merchant_details = Merchant::with(['sales'])->where('id', $id)->first();
+        $merchant_details = Merchant::with(['sales', 'services', 'shareholders', 'documents'])->where('id', $id)->first();
        
-        if ($merchant_details->sales->isEmpty()) {
-            return redirect()->route('edit.merchants.documents', ['merchant_id' => $id])
-                            ->with('error', 'No Sales found for this merchant.')->withInput($request->all());
+        if ($merchant_details && $merchant_details->documents->isEmpty() ) {
+            return redirect()->route('create.merchants.documents', ['merchant_id' => $id])
+            ->with('error', 'No Sales found for this merchant.')->withInput($request->all());
         }
-
-
-        return view('pages.merchants.edit.edit-merchants-sales', compact('merchant_details', 'title'));
+        else {
+        return view('pages.merchants.edit.edit-merchants-sales', compact('merchant_details', 'title'));   
+        }
     }
 
     public function edit_merchants_services(Request $request)
@@ -255,12 +255,20 @@ class MerchantsController extends Controller
         $id = $request->input('merchant_id'); 
        
         $title = 'Edit Merchants Services';
-        $merchant_details = Merchant::with(['services'])->where('id', $id)->first();
+        $merchant_details = Merchant::with(['services', 'shareholders', 'documents', 'sales'])->where('id', $id)->first();
         $services = Service::all();
-        if ($merchant_details->services->isEmpty()) {
-            return redirect()->route('edit.merchants.sales', ['merchant_id' => $id])
+
+        if ($merchant_details && $merchant_details->sales->isEmpty() ) {
+            return redirect()->route('create.merchants.documents', ['merchant_id' => $id])
+            ->with('error', 'No Sales found for this merchant.')->withInput($request->all());
+            
+        }
+        if ( $merchant_details->services->isEmpty()) {
+            return redirect()->route('create.merchants.sales', ['merchant_id' => $id])
                             ->with('error', 'No Services found for this merchant.')->withInput($request->all());
         }
+
+      
       
         return view('pages.merchants.edit.edit-merchants-services', compact('merchant_details', 'title', 'services'));
     }

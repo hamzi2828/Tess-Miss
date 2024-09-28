@@ -8,13 +8,13 @@
 
     
 <div class="container-xxl flex-grow-1 container-p-y">
-    <form class="kyc-form" action="{{ route('store.merchants.sales') }}" method="POST" >
+    <form class="kyc-form" action="{{ route('store.merchants.sales',['merchant_id' => request()->merchant_id]) }}" method="POST" >
         @csrf
         <!-- Sales Data Section -->
         <div class="form-section box-container">
            
             <!-- Step-based Progress Bar -->
-            @include('pages.merchants.components.progressBar')
+            @include('pages.merchants.components.edit-progressBar')
 
             <!-- Sales Fields -->
             <h4 class="mb-3">Sales Data</h4>

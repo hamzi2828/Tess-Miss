@@ -78,9 +78,9 @@ class MerchantsServiceService
         }
     }
 
-    public function storeMerchantsSales(array $data): MerchantSale
+    public function storeMerchantsSales(array $data, int $merchant_id): MerchantSale
     {
-        $merchant_id = 7;  // Example merchant ID, replace with dynamic value if needed
+        $merchant_id = $merchant_id;  // Example merchant ID, replace with dynamic value if needed
      
          // Step 2: Create a new MerchantSale record using validated data
          $merchantSale = new MerchantSale();
