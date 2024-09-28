@@ -41,7 +41,7 @@ class MerchantsController extends Controller
         $title = 'Create Merchants KYC'; 
         $MerchantCategory = MerchantCategory::all();
         $Country = Country::all();
-        // dd($Country->toArray());
+        
 
         return view('pages.merchants.create.create-merchants', compact('title', 'MerchantCategory', 'Country'));
     }
@@ -64,6 +64,7 @@ class MerchantsController extends Controller
     public  function create_merchants_services(){
         $services = Service::all();
         $title = 'Create Merchants Services';
+    
         return view('pages.merchants.create.create-merchants-services', compact('services', 'title'));
     }
     /**
@@ -144,7 +145,9 @@ class MerchantsController extends Controller
              }
          }
      
-         return redirect()->route('merchants.index')->with('success', 'Documents uploaded and saved successfully.');
+        //  return redirect()->route('merchants.index')->with('success', 'Documents uploaded and saved successfully.');
+        return redirect()->route('edit.merchants.documents', ['merchant_id' => $merchant_id])
+        ->with('success', 'Documents uploaded and saved successfully.')->withInput($request->all());
      }
      
 
@@ -164,13 +167,16 @@ class MerchantsController extends Controller
  
      
          // Redirect or return success response
-         return redirect()->route('merchants.index')->with('success', 'Merchant sales data saved successfully.');
+        //  return redirect()->route('merchants.index')->with('success', 'Merchant sales data saved successfully.');
+        return redirect()->route('edit.merchants.sales', ['merchant_id' => $merchant_id])
+        ->with('success', 'Merchant sales data saved successfully.')->withInput($request->all());
      }
      
      
 
      public function store_merchants_services(Request $request)
      {
+    
          // Step 1: Validate the incoming data
          $validatedData = $request->validate([
              'services' => 'required|array',
@@ -179,12 +185,15 @@ class MerchantsController extends Controller
          ]);
      
          $merchant_id = $request->input('merchant_id');
-     
+  
          // Step 2: Use the service to save the merchant services data
          $this->merchantsService->storeMerchantsServices($validatedData, $merchant_id);
      
-         // Step 3: Redirect with a success message
-         return redirect()->route('merchants.index')->with('success', 'Services data saved successfully.');
+        //  // Step 3: Redirect with a success message
+        //  return redirect()->route('merchants.index')->with('success', 'Services data saved successfully.');
+     
+        return redirect()->route('edit.merchants.services', ['merchant_id' => $merchant_id])
+        ->with('success', 'Services data saved successfully.')->withInput($request->all());
      }
      
      
@@ -244,6 +253,11 @@ class MerchantsController extends Controller
         if ($merchant_details && $merchant_details->documents->isEmpty() ) {
             return redirect()->route('create.merchants.documents', ['merchant_id' => $id])
             ->with('error', 'No Sales found for this merchant.')->withInput($request->all());
+            
+        }
+        if ($merchant_details && $merchant_details->sales->isEmpty() ) {
+            return redirect()->route('create.merchants.sales', ['merchant_id' => $id])
+            ->with('error', 'No Sales found for this merchant.')->withInput($request->all());
         }
         else {
         return view('pages.merchants.edit.edit-merchants-sales', compact('merchant_details', 'title'));   
@@ -264,13 +278,15 @@ class MerchantsController extends Controller
             
         }
         if ( $merchant_details->services->isEmpty()) {
-            return redirect()->route('create.merchants.sales', ['merchant_id' => $id])
+            return redirect()->route('create.merchants.services', ['merchant_id' => $id])
                             ->with('error', 'No Services found for this merchant.')->withInput($request->all());
+        }else {
+            return view('pages.merchants.edit.edit-merchants-services', compact('merchant_details', 'title', 'services'));
+
         }
 
       
       
-        return view('pages.merchants.edit.edit-merchants-services', compact('merchant_details', 'title', 'services'));
     }
     /**
      * Update the specified resource in storage.
