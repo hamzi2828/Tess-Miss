@@ -4,7 +4,7 @@
 
 <div class="content-wrapper">
     <div class="container-xxl flex-grow-1 container-p-y">
-        <div class="app-ecommerce-merchant"> <!-- Changed to app-ecommerce-merchant -->
+        <div class="app-ecommerce-merchant"> 
             <div class="d-flex justify-content-between mb-3">
                 <h4 class="fw-bold">Merchants</h4>
                 <div class="d-flex col-lg-5">
@@ -14,11 +14,12 @@
 
             <div class="card">
                 <div class="card-datatable table-responsive">
-                    <table id="customMerchantTable" class="table border-top"> <!-- Changed to customMerchantTable -->
+                    <table id="customMerchantTable" class="table border-top"> 
                         <thead>
                             <tr>
                                 <th>S.No</th>
-                                <th>Merchant</th>
+                                <th>Merchant Name</th>
+                                <th>Merchant Email</th>
                                 <th>Registration Date</th>
                                 <th>Current Status</th>
                                 <th>Added By</th>
@@ -32,6 +33,7 @@
                             <tr>
                                 <td>{{ $i++ }}</td>
                                 <td>{{ $merchant['merchant_name'] }}</td>
+                                <td>{{ $merchant['merchant_email'] }}</td>
                                 <td>{{ \Carbon\Carbon::parse($merchant['merchant_date_incorp'])->format('Y-m-d') }}</td>
                                 <td>
                                     @if($merchant['status'] == 'active')
