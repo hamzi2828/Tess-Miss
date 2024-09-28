@@ -202,12 +202,68 @@ class MerchantsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit_merchants_kyc(Request $request)
     {
-         $merchant_details = Merchant::with(['sales', 'services', 'shareholders', 'documents'])->get()->where('id', $id);
-            dd($merchant_details);
+        $id = $request->input('merchant_id'); 
+       
+        $title = 'Edit Merchants Details';
+        $merchant_details = Merchant::with(['sales', 'services', 'shareholders', 'documents'])->where('id', $id)->first();
+        $MerchantCategory = MerchantCategory::all();
+        $Country = Country::all();
+        return view('pages.merchants.edit.edit-merchants', compact('merchant_details', 'title', 'MerchantCategory', 'Country'));
+    }
+    
+    public function edit_merchants_documents(Request $request)
+    {
+
+        $title = 'Edit Merchants Details';
+
+        $id = $request->input('merchant_id'); 
+        $merchant_details = Merchant::with(['documents'])->where('id', $id)->first();
+
+        if ($merchant_details->documents->isEmpty()) {
+            return redirect()->route('edit.merchants.kyc', ['merchant_id' => $id])
+                            ->with('error', 'No documents found for this merchant.')->withInput($request->all());
+        }
+
+ 
+       
+    
+        return view('pages.merchants.edit.edit-merchants-documents', compact('merchant_details', 'title'));
+    }
+    
+
+
+    public function edit_merchants_sales (Request $request)
+    {
+        $id = $request->input('merchant_id'); 
+       
+        $title = 'Edit Merchants Sales';
+        $merchant_details = Merchant::with(['sales'])->where('id', $id)->first();
+       
+        if ($merchant_details->sales->isEmpty()) {
+            return redirect()->route('edit.merchants.documents', ['merchant_id' => $id])
+                            ->with('error', 'No Sales found for this merchant.')->withInput($request->all());
+        }
+
+
+        return view('pages.merchants.edit.edit-merchants-sales', compact('merchant_details', 'title'));
     }
 
+    public function edit_merchants_services(Request $request)
+    {
+        $id = $request->input('merchant_id'); 
+       
+        $title = 'Edit Merchants Services';
+        $merchant_details = Merchant::with(['services'])->where('id', $id)->first();
+        $services = Service::all();
+        if ($merchant_details->services->isEmpty()) {
+            return redirect()->route('edit.merchants.sales', ['merchant_id' => $id])
+                            ->with('error', 'No Services found for this merchant.')->withInput($request->all());
+        }
+      
+        return view('pages.merchants.edit.edit-merchants-services', compact('merchant_details', 'title', 'services'));
+    }
     /**
      * Update the specified resource in storage.
      */

@@ -46,12 +46,14 @@
                                     <div class="d-flex justify-content-center align-items-center">
 
 
-                                        <form action="{{ route('merchants.edit', $merchant['id']) }}" method="GET" style="display: inline-block;">
+                                        <form action="{{ route('edit.merchants.kyc') }}" method="GET" style="display: inline-block;">
                                             @csrf
+                                            <input type="hidden" name="merchant_id" value="{{ $merchant['id'] }}">
                                             <button type="submit" class="btn btn-icon btn-text-secondary rounded-pill waves-effect waves-light mx-1">
                                                 <i class="ti ti-edit"></i>
                                             </button>
                                         </form>
+                                        
                                         
                         
                                         <form action="{{ route('merchants.destroy', $merchant['id']) }}" method="POST" style="display: inline-block;">
