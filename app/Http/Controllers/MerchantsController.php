@@ -275,11 +275,121 @@ class MerchantsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update_merchants_kyc(Request $request)
     {
-        //
+        // Validate the request
+        $validatedData = $request->validate([
+            'merchant_name' => 'required|string|max:255',
+            'date_of_incorporation' => 'required|date',
+            'merchant_arabic_name' => 'required|string|max:255',
+            'company_registration' => 'required|string|max:255',
+            'company_address' => 'required|string',
+            'mobile_number' => 'required|string|max:15',
+            'company_activities' => 'required|integer',
+            'landline_number' => 'required|string|max:15',
+            'website' => 'nullable|url',
+            'email' => 'required|email',
+            'monthly_website_visitors' => 'nullable|integer',
+            'key_point_of_contact' => 'required|string',
+            'monthly_active_users' => 'nullable|integer',
+            'key_point_mobile' => 'required|string|max:15',
+            'monthly_avg_volume' => 'nullable|integer',
+            'existing_banking_partner' => 'nullable|string',
+            'monthly_avg_transactions' => 'required|integer',
+            'shareholderName.*' => 'required|string|max:255',
+            'shareholderNationality.*' => 'required|integer',
+            'shareholderID.*' => 'nullable|string|max:255',
+        ]);
+    
+        $merchant_id = $request->input('merchant_id');
+        
+        // Use the service to update merchant
+        $this->merchantsService->updateMerchants($validatedData, $merchant_id);
+    
+        // Redirect back with a success message
+        return redirect()->back()->with('success', 'Merchant and Shareholders successfully updated.');
+
     }
 
+
+    
+    public function update_merchants_documents(Request $request)
+    {
+        $validatedData = $request->validate([
+            'document_*' => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx,xls,xlsx|max:2048',
+            'expiry_*' => 'nullable|date',
+        ]);
+    
+        $merchant_id = $request->input('merchant_id');
+    
+        foreach ($request->all() as $key => $value) {
+            if (strpos($key, 'document_') === 0) {
+                $document_id = str_replace('document_', '', $key);
+    
+                if ($request->hasFile($key)) {
+                    $file = $request->file($key);
+                    $fileName = time() . '_' . $file->getClientOriginalName();
+                    $filePath = $file->storeAs('public/documents', $fileName);
+    
+                    $expiryDateKey = 'expiry_' . $document_id;
+                    $expiryDate = $request->input($expiryDateKey, null);
+    
+                    MerchantDocument::updateOrCreate(
+                        [
+                            'merchant_id' => $merchant_id,
+                            'id' => $document_id
+                        ],
+                        [
+                            'title' => $file->getClientOriginalName(),
+                            'document' => $filePath,
+                            'date_expiry' => $expiryDate,
+                            'merchant_id' => $merchant_id,
+                            'added_by' => auth()->user()->id ?? 1,
+                            'document_type' => $file->getClientMimeType(),
+                            'emailed' => false,
+                            'status' => true,
+                        ]
+                    );
+                }
+            }
+        }
+    
+        return redirect()->back()->with('success', 'Merchant and Shareholders successfully updated.');
+    }
+
+    public function update_merchants_sales(Request $request)
+    {
+        $validatedData = $request->validate([
+            'sales.*.minTransactionAmount' => 'required|numeric',
+            'sales.*.monthlyLimitAmount' => 'required|numeric',
+            'sales.*.maxTransactionAmount' => 'required|numeric',
+            'sales.*.maxTransactionCount' => 'required|integer',
+            'sales.*.dailyLimitAmount' => 'required|numeric',
+        ]);
+    
+        $merchant_id = $request->input('merchant_id');
+    
+        $this->merchantsService->updateMerchantsSales($validatedData['sales'], $merchant_id);
+    
+        return redirect()->back()->with('success', 'Merchant sales data successfully updated.');
+    }
+    
+
+    public function update_merchants_services(Request $request)
+    {
+        // Validate the request data
+        $validatedData = $request->validate([
+            'services.*.fields.*' => 'required|string',
+        ]);
+    
+        $merchant_id = $request->input('merchant_id');
+
+        $this->merchantsService->updateMerchantsServices($validatedData['services'], $merchant_id);
+
+        return redirect()->back()->with('success', 'Merchant services data successfully updated.');
+    }
+    
+    
     /**
      * Remove the specified resource from storage.
      */

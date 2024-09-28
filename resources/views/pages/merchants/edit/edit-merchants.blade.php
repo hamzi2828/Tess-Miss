@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="container-xxl flex-grow-1 container-p-y">
-    <form class="kyc-form" action="{{ route('store.merchants.kyc') }}" method="POST">
+    <form class="kyc-form" action="{{ route('update.merchants.kyc',['merchant_id' => request()->merchant_id]) }}" method="POST">
         @csrf
 
         <!-- Basic Details Section -->
@@ -145,6 +145,11 @@
                         <label for="shareholderID" class="form-label">Shareholder GID</label>
                         <input type="text" class="form-control" name="shareholderID[]" value="{{ $shareholder['qid'] }}">
                     </div>
+                    <div class="col-md-1">
+                        <button type="button" class="btn btn-danger remove-btn">
+                            <i class="fas fa-trash"></i> <!-- Trash bin icon -->
+                        </button>
+                    </div>
                 </div>
                 @endforeach
             </div>
@@ -167,7 +172,21 @@
 
     // JavaScript to handle the Add Shareholder functionality
   // JavaScript to handle the Add Shareholder functionality
-document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', function() {
+    // Function to handle removing shareholder entry
+    function removeShareholder() {
+        document.querySelectorAll('.remove-btn').forEach(function(button) {
+            button.addEventListener('click', function() {
+                const shareholderEntry = this.closest('.shareholder-entry');
+                shareholderEntry.remove();
+            });
+        });
+    }
+
+    // Call the remove function for initially rendered shareholders
+    removeShareholder();
+
+    // Add new shareholders dynamically
     document.getElementById('add-shareholder-btn').addEventListener('click', function() {
         const shareholdersContainer = document.getElementById('shareholders-container');
         
@@ -195,31 +214,24 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
             <div class="col-md-1">
                 <button type="button" class="btn btn-danger remove-btn">
-                    <i class="fas fa-trash"></i> <!-- Trash bin icon -->
+                    <i class="fas fa-trash"></i>
                 </button>
             </div>
         `;
         
         // Append the new shareholder entry to the container
         shareholdersContainer.appendChild(newShareholder);
-        
+
         // Reinitialize Select2 on the newly added select element
         $(newShareholder).find('.select2').select2({
             placeholder: 'Select Country',
             allowClear: true
         });
-        
-        // Add functionality to remove the newly added shareholder
-        newShareholder.querySelector('.remove-btn').addEventListener('click', function() {
-            shareholdersContainer.removeChild(newShareholder);
-        });
-    });
 
-    // Initialize Select2 on the initial page load for existing selects
-    $('#companyActivities, #shareholderNationality').select2({
-        placeholder: 'Select Country',
-        allowClear: true
+        // Reapply remove button functionality for newly added shareholders
+        removeShareholder();
     });
 });
+
 
 </script>

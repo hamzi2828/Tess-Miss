@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="container-xxl flex-grow-1 container-p-y">
-    <form class="kyc-form" action="{{ route('store.merchants.services') }}" method="POST">
+    <form class="kyc-form" action="{{ route('update.merchants.services',['merchant_id' => request()->merchant_id]) }}" method="POST">
         @csrf
         <!-- Sales Data Section -->
         <div class="form-section box-container">

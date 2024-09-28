@@ -18,12 +18,7 @@ class MerchantsServiceService
         return Merchant::with(['sales', 'services', 'shareholders', 'documents'])->get()->toArray();
     }
     
-    /**
-     * Create a new merchant along with its shareholders.
-     * 
-     * @param array $data The validated data from the form
-     * @return Merchant The newly created Merchant instance
-     */
+ 
     public function createMerchants(array $data): Merchant
     {
         // Create the merchant record
@@ -54,12 +49,7 @@ class MerchantsServiceService
         return $merchant;
     }
 
-    /**
-     * Create shareholders associated with the merchant.
-     * 
-     * @param Merchant $merchant The Merchant instance
-     * @param array $data The validated form data
-     */
+  
     protected function createShareholders(Merchant $merchant, array $data): void
     {
         $shareholderNames = $data['shareholderName'];
@@ -77,6 +67,8 @@ class MerchantsServiceService
             $shareholder->save();
         }
     }
+
+
 
     public function storeMerchantsSales(array $data, int $merchant_id): MerchantSale
     {
@@ -119,4 +111,96 @@ class MerchantsServiceService
             }
         }
     }
+
+
+
+    public function updateMerchants(array $data, int $merchant_id): Merchant
+    {
+        // Find the existing merchant
+        $merchant = Merchant::findOrFail($merchant_id);
+        
+        // Update merchant fields
+        $merchant->merchant_name = $data['merchant_name']; 
+        $merchant->merchant_name_ar = $data['merchant_arabic_name']; 
+        $merchant->comm_reg_no = $data['company_registration']; 
+        $merchant->address = $data['company_address']; 
+        $merchant->merchant_mobile = $data['mobile_number']; 
+        $merchant->merchant_category = $data['company_activities'];
+        $merchant->merchant_landline = $data['landline_number']; 
+        $merchant->merchant_url = $data['website']; 
+        $merchant->merchant_email = $data['email']; 
+        $merchant->website_month_visit = $data['monthly_website_visitors']; 
+        $merchant->contact_person_name = $data['key_point_of_contact']; 
+        $merchant->website_month_active = $data['monthly_active_users']; 
+        $merchant->contact_person_mobile = $data['key_point_mobile']; 
+        $merchant->website_month_volume = $data['monthly_avg_volume']; 
+        $merchant->merchant_previous_bank = $data['existing_banking_partner']; 
+        $merchant->website_month_transaction = $data['monthly_avg_transactions']; 
+        $merchant->merchant_date_incorp = $data['date_of_incorporation']; 
+        $merchant->added_by_kyc = Auth::user()->id ?? 1;
+        
+        // Save the updated merchant data
+        $merchant->save();
+
+        // Update the associated shareholders
+        $this->updateShareholders($merchant, $data);
+
+        return $merchant;
+    }
+
+
+    protected function updateShareholders(Merchant $merchant, array $data): void
+    {
+        // Delete existing shareholders (you could also update instead of deleting if needed)
+        MerchantShareholder::where('merchant_id', $merchant->id)->delete();
+
+        // Re-create the shareholders with the updated data
+        $this->createShareholders($merchant, $data);
+    }
+
+
+    public function updateMerchantsSales(array $salesData, int $merchant_id)
+    {
+        foreach ($salesData as $sale) {
+            $merchantSale = MerchantSale::updateOrCreate(
+                ['merchant_id' => $merchant_id],
+                [
+                    'min_transaction_amount' => $sale['minTransactionAmount'],
+                    'max_transaction_amount' => $sale['maxTransactionAmount'],
+                    'monthly_limit_amount' => $sale['monthlyLimitAmount'],
+                    'max_transaction_count' => $sale['maxTransactionCount'],
+                    'daily_limit_amount' => $sale['dailyLimitAmount'],
+                    'added_by' => Auth::user()->id ?? 1
+                ]
+            );
+        }
+    }
+
+
+
+    public function updateMerchantsServices(array $servicesData, int $merchant_id)
+    {
+        // Iterate over each service in the request
+        foreach ($servicesData as $service_id => $serviceData) {
+            // Get the fields for the service
+            $fields = $serviceData['fields'];
+            
+            // Iterate over each field and update or create the merchant services
+            foreach ($fields as $index => $fieldValue) {
+                MerchantService::updateOrCreate(
+                    [
+                        'merchant_id' => $merchant_id,
+                        'service_id' => $service_id,
+                        'field_name' => 'Field ' . $index
+                    ],
+                    [
+                        'field_value' => $fieldValue,
+                        'added_by' => Auth::user()->id ?? 1,
+                        'status' => true,
+                    ]
+                );
+            }
+        }
+    }
+
 }

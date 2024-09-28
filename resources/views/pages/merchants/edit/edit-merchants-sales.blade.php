@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
 <div class="container-xxl flex-grow-1 container-p-y">
-    <form class="kyc-form" action="{{ route('store.merchants.sales') }}" method="POST">
+    <form class="kyc-form" action="{{ route('update.merchants.sales',['merchant_id' => request()->merchant_id]) }}" method="POST">
         @csrf
 
         <!-- Sales Data Section -->
