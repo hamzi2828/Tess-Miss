@@ -60,6 +60,15 @@ class User extends Authenticatable
     {
         return $this->hasMany(Department::class, 'added_by');
     }
+
+
+    // Relationship to get permissions of the user
+
+    public function permissions()
+    {
+        return $this->hasMany(UserPermission::class);
+    }
+
     
 }
 

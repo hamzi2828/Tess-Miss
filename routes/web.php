@@ -29,12 +29,17 @@ Route::get('/', function () {
 Route::resource('categories', CategoryController::class);
 Route::resource('products', ProductController::class);
 Route::resource('users', UserController::class);
+Route::get('/usersEdit', [UserController::class, 'edit'])->name('users.edit');
+Route::get('/usersCreate', [UserController::class, 'create'])->name('users.create');
+
+
 Route::resource('departments', DepartmentController::class);
 Route::resource('documents', DocumentsController::class);
 Route::resource('services', ServicesController::class);
 Route::resource('merchant-categories', MerchantCategoriesController::class);
 Route::resource('countries', CountryController::class);
 Route::resource('merchants', MerchantsController::class);
+
 Route::get('/merchantskyc', [MerchantsController::class, 'create_merchants_kfc'])->name('create.merchants.kfc');
 Route::Post('/store/merchantskyc', [MerchantsController::class, 'store_merchants_kyc'])->name('store.merchants.kyc');
 Route::get('/editMechnatKyc', [MerchantsController::class, 'edit_merchants_kyc'])->name('edit.merchants.kyc');
