@@ -49,6 +49,11 @@
             <div data-i18n="All-Users">All Users</div>
           </a>
         </li>
+        <li class="menu-item {{ request()->routeIs('users.create') ? 'active' : '' }}">
+          <a href="{{ route('users.create') }}" class="menu-link">
+            <div data-i18n="Create-User">Create User</div>
+          </a>
+        </li>
       </ul>
     </li>
     

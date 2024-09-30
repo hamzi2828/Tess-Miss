@@ -8,12 +8,7 @@
             <h4 class="fw-bold">Users</h4>
             <div class="d-flex col-lg-5">
                 <input type="text" id="customUserSearch" class="form-control me-2" placeholder="Search users" onkeyup="filterTable()">
-                <a href="{{ route('users.create') }}">
-                    <button class="btn btn-primary btn-lg" style="width: 224px;">
-                        <i class="ti ti-plus me-1"></i> Add User
-                    </button>
-
-                </a>
+              
              
             </div>
         </div>

@@ -31,7 +31,9 @@
 <div class="container-xxl flex-grow-1 container-p-y">
     <div class="row">
         <!-- Left Side: User Details -->
-        <div class="col-md-6">
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-8">
             <div class="card shadow-lg p-4 card-custom">
                 <h4 class="fw-bold text-primary mb-4">Create User</h4>
 
