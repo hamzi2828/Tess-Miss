@@ -2,15 +2,15 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\SoftDeletes; // Import SoftDeletes
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes; // Include SoftDeletes
 
     /**
      * The attributes that are mass assignable.
@@ -46,30 +46,49 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'deleted_at' => 'datetime', // Cast for soft delete
     ];
 
+    /**
+     * Soft delete functionality.
+     *
+     * @var array<string, string>
+     */
+    protected $dates = ['deleted_at']; // Soft delete column
 
-    // Relationship to get departments supervised by the user
+    /**
+     * Relationship: Departments supervised by the user.
+     */
     public function supervisedDepartments()
     {
         return $this->hasMany(Department::class, 'supervisor_id');
     }
 
-    // Relationship to get departments added by the user
+    /**
+     * Relationship: Departments added by the user.
+     */
     public function addedDepartments()
     {
         return $this->hasMany(Department::class, 'added_by');
     }
 
-
-    // Relationship to get permissions of the user
-
+    /**
+     * Relationship: Permissions of the user.
+     */
+    // public function permissions()
+    // {
+    //     return $this->hasMany(UserPermission::class);
+    // }
     public function permissions()
     {
-        return $this->hasMany(UserPermission::class);
+        return $this->hasOne(UserPermission::class, 'user_id');
     }
 
+    /** approved_by relationship of the merchant */
+    public function approvedBy()
+    {
+        return $this->belongsTo(User::class, 'approved_by');
+    }
+    
     
 }
-
-

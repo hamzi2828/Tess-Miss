@@ -14,7 +14,7 @@ class UserPermission extends Model
      *
      * @var string
      */
-    protected $table = 'user_permissions'; // Define the table name explicitly if it differs from default plural form
+    protected $table = 'user_permissions'; // Define the table name explicitly
 
     /**
      * The attributes that are mass assignable.
@@ -23,25 +23,16 @@ class UserPermission extends Model
      */
     protected $fillable = [
         'user_id', // Foreign key to users table
-        'add_kyc',
-        'view_kyc',
-        'change_kyc',
-        'approve_kyc',
-        'add_documents',
-        'view_documents',
-        'change_documents',
-        'approve_documents',
-        'add_sales',
-        'view_sales',
-        'change_sales',
-        'approve_sales',
-        'add_services',
-        'view_services',
-        'change_services',
-        'approve_services',
-        'add_user',
-        'view_users',
-        'change_user'
+        'permissions' // Store permissions as a JSON or array
+    ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'permissions' => 'array', // Automatically cast the permissions column as an array
     ];
 
     /**

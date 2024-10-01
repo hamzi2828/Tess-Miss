@@ -66,13 +66,14 @@
                                 @endif
                             </td>
                             
+                            @can('changeUser', App\Models\User::class)
                             <td class="text-lg-center">
                                 <div class="d-flex justify-content-center align-items-center">
                                     <!-- Edit Button -->
                                     <button class="btn btn-icon btn-text-secondary rounded-pill waves-effect waves-light mx-1 edit-user-btn"
-                                    onclick="editUser({{ $user->id }})">
-                                <i class="ti ti-edit"></i>
-                            </button>
+                                            onclick="editUser({{ $user->id }})">
+                                        <i class="ti ti-edit"></i>
+                                    </button>
                             
                                     <!-- Delete Form -->
                                     <form action="{{ route('users.destroy', $user->id) }}" method="POST" style="display: inline-block;">
@@ -85,6 +86,7 @@
                                   
                                 </div>
                             </td>
+                            @endcan
                         </tr>
                         @endforeach
                     </tbody>

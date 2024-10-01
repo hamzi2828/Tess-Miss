@@ -40,7 +40,7 @@ class MerchantsServiceService
         $merchant->merchant_previous_bank = $data['existing_banking_partner']; 
         $merchant->website_month_transaction = $data['monthly_avg_transactions']; 
         $merchant->merchant_date_incorp = $data['date_of_incorporation']; 
-        $merchant->added_by_kyc = Auth::user()->id ?? 1; 
+        $merchant->added_by = Auth::user()->id ?? 1; 
         $merchant->save();
         
         // Handle Shareholders
@@ -137,7 +137,7 @@ class MerchantsServiceService
         $merchant->merchant_previous_bank = $data['existing_banking_partner']; 
         $merchant->website_month_transaction = $data['monthly_avg_transactions']; 
         $merchant->merchant_date_incorp = $data['date_of_incorporation']; 
-        $merchant->added_by_kyc = Auth::user()->id ?? 1;
+        $merchant->added_by = Auth::user()->id ?? 1;
         
         // Save the updated merchant data
         $merchant->save();

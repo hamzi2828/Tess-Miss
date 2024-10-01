@@ -61,10 +61,14 @@ class UserController extends Controller
         // Get the user ID from the request
         $userId = $request->input('user_id');
         $user = User::findOrFail($userId);
+    
+        // Get the user's permissions
         $permissions = UserPermission::firstOrNew(['user_id' => $user->id]);
-  
-
-        return view('pages.users.edit-user', compact('user', 'permissions'));
+    
+        // Decode the permissions, or use them directly if they're already an array
+        $permissionsArray = is_string($permissions->permissions) ? json_decode($permissions->permissions, true) : $permissions->permissions ?? [];
+    
+        return view('pages.users.edit-user', compact('user', 'permissionsArray'));
     }
     
 
@@ -73,6 +77,7 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
+        
        
         // Validate the request data
         $validatedData = $request->validate([
@@ -83,8 +88,11 @@ class UserController extends Controller
             'userRole' => 'nullable|string|max:50',
             'userStatus' => 'required|string|in:active,inactive',
             'userPicture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'permissions' => 'nullable|array',
+            'permissions' => 'nullable|array', 
+            'userAddress' => 'nullable|string|max:500',
+        
         ]);
+        
 
         // Use the UserService to update the user
         $this->userService->updateUser($user, $validatedData);

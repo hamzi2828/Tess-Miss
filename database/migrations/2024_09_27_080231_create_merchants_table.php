@@ -48,16 +48,16 @@ return new class extends Migration
             $table->timestamp('time_created')->useCurrent(); // Created timestamp
         
             // Foreign keys for user references (optional)
-            $table->integer('added_by_kyc')->nullable();
-            $table->integer('added_by_sales')->nullable();
-            $table->integer('added_by_services')->nullable();
-            $table->integer('added_by_documents')->nullable();
-            $table->integer('approved_by_kyc')->nullable();
-            $table->integer('approved_by_sales')->nullable();
-            $table->integer('approved_by_services')->nullable();
-            $table->integer('approved_by_documents')->nullable();
-        
-            $table->timestamps(); // Laravel's default created_at and updated_at timestamps
+            $table->unsignedBigInteger('added_by')->nullable();
+            $table->unsignedBigInteger('approved_by')->nullable();
+
+             // Foreign key constraints
+            $table->foreign('added_by')->references('id')->on('users')->onDelete('set null');
+            $table->foreign('approved_by')->references('id')->on('users')->onDelete('set null');
+
+
+
+            $table->timestamps(); 
         });
         
     }

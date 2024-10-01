@@ -78,6 +78,7 @@ class MerchantsController extends Controller
 
      public function store_merchants_kyc(Request $request)
      {
+        
          // Validate the request
          $validatedData  = $request->validate([
              'merchant_name' => 'required|string|max:255',
@@ -88,7 +89,7 @@ class MerchantsController extends Controller
              'mobile_number' => 'required|string|max:15',
              'company_activities' => 'required|integer',
              'landline_number' => 'required|string|max:15',
-             'website' => 'nullable|url',
+             'website' => 'nullable|url', 
              'email' => 'required|email',
              'monthly_website_visitors' => 'nullable|integer',
              'key_point_of_contact' => 'required|string',
@@ -101,7 +102,7 @@ class MerchantsController extends Controller
              'shareholderNationality.*' => 'required|integer',
              'shareholderID.*' => 'nullable|string|max:255',
          ]);
-         
+        
          // Use the service to handle merchant creation
          $this->merchantsService->createMerchants($validatedData);
  
@@ -136,7 +137,7 @@ class MerchantsController extends Controller
                          'document' => $filePath,
                          'date_expiry' => $expiryDate,
                          'merchant_id' => $merchant_id,
-                         'added_by' => auth()->user()->id ?? 1,
+                         'added_by' => auth()->user()->id,
                          'document_type' => $file->getClientMimeType(),
                          'emailed' => false,
                          'status' => true,

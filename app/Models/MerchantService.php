@@ -17,6 +17,7 @@ class MerchantService extends Model
         'field_name',
         'field_value',
         'added_by',
+        'approved_by',
         'status',
     ];
 
@@ -36,5 +37,11 @@ class MerchantService extends Model
     public function addedBy()
     {
         return $this->belongsTo(User::class, 'added_by');
+    }
+
+    // Relationship with User (approved_by)
+    public function approvedBy()
+    {
+        return $this->belongsTo(User::class, 'approved_by');
     }
 }

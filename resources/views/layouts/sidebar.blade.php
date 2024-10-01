@@ -38,24 +38,34 @@
     
 
     
+    
     <li class="menu-item {{ request()->routeIs('users.*') ? 'open' : '' }}">
       <a href="javascript:void(0);" class="menu-link menu-toggle">
         <i class="menu-icon tf-icons ti ti-users"></i>
         <div data-i18n="Users">Users</div>
       </a>
       <ul class="menu-sub">
+      
+        @can('viewUsers', App\Models\User::class)
         <li class="menu-item {{ request()->routeIs('users.index') ? 'active' : '' }}">
           <a href="{{ route('users.index') }}" class="menu-link">
             <div data-i18n="All-Users">All Users</div>
           </a>
         </li>
+        @endcan
+    
+
+       @can('addUser', App\Models\User::class)
         <li class="menu-item {{ request()->routeIs('users.create') ? 'active' : '' }}">
           <a href="{{ route('users.create') }}" class="menu-link">
             <div data-i18n="Create-User">Create User</div>
           </a>
         </li>
+        @endcan
+ 
       </ul>
     </li>
+    
     
     <li class="menu-item {{ request()->routeIs('departments.*') ? 'open' : '' }}">
       <a href="javascript:void(0);" class="menu-link menu-toggle">
@@ -71,6 +81,8 @@
       </ul>
     </li>
     
+
+    @can('viewDocuments', App\Models\User::class)
     <li class="menu-item {{ request()->routeIs('documents.*') ? 'open' : '' }}">
       <a href="javascript:void(0);" class="menu-link menu-toggle">
         <i class="menu-icon tf-icons ti ti-file"></i>
@@ -84,7 +96,10 @@
         </li>
       </ul>
     </li>
+    @endcan
     
+
+    @can('viewServices', App\Models\User::class)
     <li class="menu-item {{ request()->routeIs('services.*') ? 'open' : '' }}">
       <a href="javascript:void(0);" class="menu-link menu-toggle">
         <i class="menu-icon tf-icons ti ti-briefcase"></i>
@@ -98,6 +113,8 @@
         </li>
       </ul>
     </li>
+    @endcan
+    
     
     <li class="menu-item {{ request()->routeIs('merchant-categories.*') ? 'open' : '' }}">
       <a href="javascript:void(0);" class="menu-link menu-toggle">
@@ -112,6 +129,8 @@
         </li>
       </ul>
     </li>
+    
+
     
     <li class="menu-item {{ request()->routeIs('countries.*') ? 'open' : '' }}">
       <a href="javascript:void(0);" class="menu-link menu-toggle">

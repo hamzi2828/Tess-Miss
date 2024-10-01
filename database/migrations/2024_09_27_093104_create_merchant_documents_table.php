@@ -21,6 +21,7 @@ return new class extends Migration
             $table->timestamp('time_created')->useCurrent(); 
             $table->string('document_type')->nullable(); 
             $table->unsignedBigInteger('added_by'); 
+            $table->unsignedBigInteger('approved_by')->nullable();
             $table->boolean('emailed')->default(false);
             $table->boolean('status')->default(true); 
             $table->timestamps();
@@ -29,6 +30,7 @@ return new class extends Migration
             $table->foreign('merchant_id')->references('id')->on('merchants')->onDelete('cascade');
             $table->foreign('previous_doc_id')->references('id')->on('merchant_documents')->onDelete('set null');
             $table->foreign('added_by')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('approved_by')->references('id')->on('users')->onDelete('set null');
         });
     }
 

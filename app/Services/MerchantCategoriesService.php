@@ -23,8 +23,7 @@ class MerchantCategoriesService
             'title' => $data['categoryName'],
             'parent_id' => $data['parentCategory'] ?? null, // Use null if no parent category is selected
             'fields' => json_encode($data['categoryFields'] ?? []), // Convert categoryFields to JSON
-            'added_by' => '1',
-            // 'added_by' => auth()->id(), // Use authenticated user's ID
+            'added_by' => Auth()->user()->id,
             'created_at' => now(),
             'updated_at' => now(),
         ];

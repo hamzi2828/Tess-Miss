@@ -24,8 +24,7 @@ class DocumentsService
             'is_required' => $data['is_required'],
             'require_expiry' => $data['require_expiry'],
             'allowed_types' => $allowedTypesString,
-            'added_by' => '1', 
-            // 'added_by' => auth()->user()->id, 
+            'added_by' => auth()->user()->id, 
             'status' => 'active',
         ]);
     }

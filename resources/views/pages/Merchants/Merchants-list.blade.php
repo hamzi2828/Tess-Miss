@@ -42,7 +42,7 @@
                                         <span class="badge bg-danger">Inactive</span>
                                     @endif
                                 </td>
-                                <td>{{ $merchant['added_by_kyc'] }}</td>
+                                <td>{{ $merchant['added_by'] }}</td>
                                 <td>{{ $merchant['approved_by_kyc'] ?? 'Not Approved' }}</td>
                                 <td class="text-lg-center">
                                     <div class="d-flex justify-content-center align-items-center">

@@ -46,7 +46,7 @@ class Merchant extends Model
         'max_tran_count',
         'time_created',
         'status',
-        'added_by_kyc',
+        'added_by',
         'added_by_sales',
         'added_by_services',
         'added_by_documents',

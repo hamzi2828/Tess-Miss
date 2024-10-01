@@ -31,10 +31,10 @@ class UserService
             'email' => $data['userEmail'],
             'password' => Hash::make($data['userPassword']), // Hash the password
             'phone' => $data['userPhone'],
-            'department' => $data['userDepartment'] ?? null,
-            'role' => $data['userRole'] ?? null,
+            'department' => $data['userDepartment'] ?? 'null',
+            'role' => $data['userRole'] ?? 'null',
             'status' => $data['userStatus'],
-            'address' => $data['userAddress']    ?? null,
+            'address' => $data['userAddress'] ?? 'null',
             'picture' => $filePath, // Store image path
         ]);
     }
@@ -48,13 +48,15 @@ class UserService
      */
     public function updateUser(User $user, array $data): User
     {
+        
         // Update user information
         $user->name = $data['userFullname'];
         $user->email = $data['userEmail'];
         $user->phone = $data['userPhone'] ?? null;
         $user->department = $data['userDepartment'] ?? null;
-        $user->role = $data['userRole'] ?? null;
+        $user->role = $data['userRole'] ?? 'null';
         $user->status = $data['userStatus'];
+        $user->address = $data['userAddress'] ?? null;
    
 
             // Handle profile picture upload if there's a new picture
@@ -77,44 +79,20 @@ class UserService
 
     public function updateUserPermissions(User $user, array $permissions): void
     {
-        // Retrieve the existing permission record or create a new one if it doesn't exist
-        $userPermission = UserPermission::firstOrNew(['user_id' => $user->id]);
+        // Delete previous permissions if any
+        UserPermission::where('user_id', $user->id)->delete();
     
-        // Initialize all permissions to false (0)
-        $permissionData = [
-            'add_kyc' => 0,
-            'view_kyc' => 0,
-            'change_kyc' => 0,
-            'approve_kyc' => 0,
-            'add_documents' => 0,
-            'view_documents' => 0,
-            'change_documents' => 0,
-            'approve_documents' => 0,
-            'add_sales' => 0,
-            'view_sales' => 0,
-            'change_sales' => 0,
-            'approve_sales' => 0,
-            'add_services' => 0,
-            'view_services' => 0,
-            'change_services' => 0,
-            'approve_services' => 0,
-            'add_user' => 0,
-            'view_users' => 0,
-            'change_user' => 0,
-        ];
+        // Create or update new permissions record
+        $userPermission = new UserPermission();
+        $userPermission->user_id = $user->id;
+        $userPermission->permissions = json_encode($permissions);
     
-        // Loop through the permissions array from the request and set corresponding fields to true (1)
-        foreach ($permissions as $permission) {
-            $field = strtolower(str_replace(['add', 'view', 'change', 'approve'], ['add_', 'view_', 'change_', 'approve_'], $permission));
-            if (array_key_exists($field, $permissionData)) {
-                $permissionData[$field] = 1;
-            }
-        }
-    
-        // Update or create the user permission record
-        $userPermission->fill($permissionData);
+        // Save the new permissions record
         $userPermission->save();
     }
+    
+    
+    
     
     
 

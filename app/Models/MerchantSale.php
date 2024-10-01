@@ -21,6 +21,7 @@ class MerchantSale extends Model
         'monthly_limit_amount',
         'max_transaction_count',
         'added_by',
+        'approved_by',
     ];
     
 
@@ -30,11 +31,17 @@ class MerchantSale extends Model
         return $this->belongsTo(User::class, 'added_by');
     }
 
+    // Define the relationship with the User model (for the 'approved_by' field)
+    public function approvedBy()
+    {
+        return $this->belongsTo(User::class, 'approved_by');
+    }
+
     // Define the relationship with the Merchant model
     public function merchant()
     {
         return $this->belongsTo(Merchant::class, 'merchant_id');
     }
 
-    // Additional custom methods (if needed) can be added here
+
 }

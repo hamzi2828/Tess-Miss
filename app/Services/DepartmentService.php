@@ -24,7 +24,7 @@ class DepartmentService
         return Department::create([
             'title' => $validatedData['departmentTitle'],
             'supervisor_id' => $validatedData['supervisor_id'],
-            'added_by' => '1', // Or use auth()->user()->id if you have authentication
+            'added_by' => Auth()->user()->id,
             'date_added' => now(),
         ]);
     }

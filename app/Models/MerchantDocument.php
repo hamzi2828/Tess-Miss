@@ -20,6 +20,7 @@ class MerchantDocument extends Model
         'time_created',
         'document_type',
         'added_by',
+        'approved_by',
         'emailed',
         'status'
     ];
@@ -34,6 +35,12 @@ class MerchantDocument extends Model
     public function addedBy()
     {
         return $this->belongsTo(User::class, 'added_by');
+    }
+
+    // Relationship with the User model (for the approved_by field)
+    public function approvedBy()
+    {
+        return $this->belongsTo(User::class, 'approved_by');
     }
 
     // Relationship with the previous document in the Document model

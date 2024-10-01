@@ -17,13 +17,13 @@ class ServicesService
     /**
      * Create a new service in the database.
      */
-    public function createService(array $data, $userId='1')
+    public function createService(array $data )
     {
        
         return Service::create([
             'name' => $data['serviceName'],
             'fields' => json_encode($data['serviceFields'] ?? []),
-            'added_by' => $userId,  // Dynamically use the authenticated user's ID
+            'added_by' => Auth()->user()->id,
             'date_added' => now(),
         ]);
     }
