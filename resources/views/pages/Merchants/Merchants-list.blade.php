@@ -29,12 +29,13 @@
                         </thead>
                         <tbody>
                             @php $i = 1; @endphp
+                         
                             @foreach($merchants as $merchant)
                             <tr>
                                 <td>{{ $i++ }}</td>
                                 <td>{{ $merchant['merchant_name'] }}</td>
                                 <td>{{ $merchant['merchant_email'] }}</td>
-                                <td>{{ \Carbon\Carbon::parse($merchant['merchant_date_incorp'])->format('Y-m-d') }}</td>
+                                <td>{{ \Carbon\Carbon::parse($merchant['created_at'])->format('Y-m-d') }}</td>
                                 <td>
                                     @if($merchant['status'] == 'active')
                                         <span class="badge bg-success">Active</span>
