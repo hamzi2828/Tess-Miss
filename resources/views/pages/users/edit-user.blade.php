@@ -43,6 +43,33 @@
                         <option value="inactive" {{ $user->status == 'inactive' ? 'selected' : '' }}>Inactive</option>
                     </select>
                 </div>
+     
+          
+                {{-- <!-- Department --> --}}
+                <div class="mb-4">
+                    <label for="selectDepartment" class="form-label fw-medium text-secondary">Department</label>
+                    <select class="form-select select2" id="selectDepartment" name="department_id" required>
+                       
+                        @foreach($departments as $department)
+                            <option value="{{ $department->id }}" {{ $user->department == $department->id ? 'selected' : '' }}>
+                                {{ $department->title }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                
+                
+
+                <script>
+                    // Initialize Select2 on the initial page load for existing selects
+                    document.addEventListener('DOMContentLoaded', function() {
+
+                        $('#selectDepartment').select2({
+                            placeholder: 'Select Country',
+                            allowClear: true
+                        });
+                    });
+                </script>
         
                 <!-- Current Profile Picture -->
                 @if($user->picture)

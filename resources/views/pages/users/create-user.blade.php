@@ -70,6 +70,32 @@
                         </select>
                     </div>
 
+
+      
+                    <div class="mb-4">
+                        <label for="selectDepartment" class="form-label fw-medium text-secondary"> Department </label>
+                        <select class="form-select select2" id="selectDepartment" name="department_id" required>
+                            <option selected>Select Department</option>
+                            @foreach($departments as $department)
+                                <option value="{{ $department->id }}">{{ $department->title }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    
+ 
+                    <script>
+                        // Initialize Select2 on the initial page load for existing selects
+                        document.addEventListener('DOMContentLoaded', function() {
+
+                            $('#selectDepartment').select2({
+                                placeholder: 'Select Country',
+                                allowClear: true
+                            });
+                        });
+                    </script>
+
+
+
                     <!-- Password -->
                     <div class="mb-4">
                         <label class="form-label fw-medium text-secondary" for="userPassword">Password</label>

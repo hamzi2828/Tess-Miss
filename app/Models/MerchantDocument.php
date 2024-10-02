@@ -48,4 +48,10 @@ class MerchantDocument extends Model
     {
         return $this->belongsTo(Document::class, 'previous_doc_id');
     }
+    // Relationship with the DocumentType model
+    public function documentType()
+    {
+        return $this->belongsTo(DocumentType::class, 'document_type');
+    }
+
 }

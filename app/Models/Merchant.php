@@ -47,13 +47,7 @@ class Merchant extends Model
         'time_created',
         'status',
         'added_by',
-        'added_by_sales',
-        'added_by_services',
-        'added_by_documents',
-        'approved_by_kyc',
-        'approved_by_sales',
-        'approved_by_services',
-        'approved_by_documents',
+        'approved_by',
         'kyc_comments',
     ];
 
@@ -64,24 +58,41 @@ class Merchant extends Model
         'max_tran_count' => 'integer',
     ];
 
-    // Define the relationships // Define the relationship with MerchantSale
+    // Relationship with MerchantSale
     public function sales()
     {
         return $this->hasMany(MerchantSale::class, 'merchant_id');
     }
 
+    // Relationship with MerchantService
     public function services()
     {
         return $this->hasMany(MerchantService::class, 'merchant_id');
     }
 
+    // Relationship with MerchantShareholder
     public function shareholders()
     {
         return $this->hasMany(MerchantShareholder::class, 'merchant_id');
     }
 
+    // Relationship with MerchantDocument
     public function documents()
     {
         return $this->hasMany(MerchantDocument::class, 'merchant_id');
     }
+
+    // Relationship with the user who added the merchant
+    public function addedBy()
+    {
+        return $this->belongsTo(User::class, 'added_by');
+    }
+
+    // Relationship with the user who approved KYC
+    public function approvedBy()
+    {
+        return $this->belongsTo(User::class, 'approved_by');
+    }
+
+
 }

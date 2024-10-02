@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('department')->nullable();
             $table->string('role')->default('subscriber');
             $table->enum('status', ['active', 'inactive'])->default('active');
-            $table->string('picture')->nullable(); // For storing image path
+            $table->string('picture')->nullable(); 
             $table->text('address')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();

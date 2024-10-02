@@ -25,13 +25,13 @@ class MerchantSale extends Model
     ];
     
 
-    // Define the relationship with the User model (for the 'added_by' field)
+    // Define the relationship with the User model for the 'added_by' field
     public function addedBy()
     {
         return $this->belongsTo(User::class, 'added_by');
     }
 
-    // Define the relationship with the User model (for the 'approved_by' field)
+    // Define the relationship with the User model for the 'approved_by' field
     public function approvedBy()
     {
         return $this->belongsTo(User::class, 'approved_by');
@@ -42,6 +42,5 @@ class MerchantSale extends Model
     {
         return $this->belongsTo(Merchant::class, 'merchant_id');
     }
-
 
 }

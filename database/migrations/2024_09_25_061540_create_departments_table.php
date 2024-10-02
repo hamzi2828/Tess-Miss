@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('departments', function (Blueprint $table) {
             $table->id();
             $table->string('title');  
-            $table->foreignId('supervisor_id')->constrained('users');  
+            $table->foreignId('supervisor_id')->constrained('users')->nullable();  
             $table->foreignId('added_by')->constrained('users');  
             $table->timestamp('date_added')->nullable();
             $table->timestamps();

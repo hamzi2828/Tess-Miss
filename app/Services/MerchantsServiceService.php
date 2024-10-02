@@ -15,8 +15,15 @@ class MerchantsServiceService
 
     public function getAllMerchants(): array
     {
-        return Merchant::with(['sales', 'services', 'shareholders', 'documents'])->get()->toArray();
+        $merchants = Merchant::with([
+            'sales.addedBy', 'sales.approvedBy', 
+            'services.addedBy', 'services.approvedBy', 
+            'shareholders', 
+            'documents.addedBy', 'documents.approvedBy',
+            'addedBy', 'approvedBy'])->get()->toArray();
+        return $merchants;
     }
+    
     
  
     public function createMerchants(array $data): Merchant

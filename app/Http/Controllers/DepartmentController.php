@@ -31,10 +31,12 @@ class DepartmentController extends Controller
      */
     public function store(Request $request)
     {
+       
         // Validate the incoming request
         $validatedData = $request->validate([
             'departmentTitle' => 'required|string|max:255',
             'supervisor_id' => 'required|exists:users,id',
+            'department_stage' => 'required|in:1,2,3,4',
         ]);
 
         // Call the service to store the department
@@ -49,10 +51,12 @@ class DepartmentController extends Controller
      */
     public function update(Request $request, Department $department)
     {
+        
         // Validate the request data
         $validatedData = $request->validate([
             'departmentTitle' => 'required|string|max:255',
-            'supervisor_id' => 'required|exists:users,id',
+            'department_stage' => 'required|integer|in:1,2,3,4', // Assuming stages are only between 1 and 4
+            'new_supervisor_id' => 'required|exists:users,id', // Correct field name based on your request
         ]);
 
         // Call the service to update the department

@@ -56,13 +56,7 @@ class User extends Authenticatable
      */
     protected $dates = ['deleted_at']; // Soft delete column
 
-    /**
-     * Relationship: Departments supervised by the user.
-     */
-    public function supervisedDepartments()
-    {
-        return $this->hasMany(Department::class, 'supervisor_id');
-    }
+  
 
     /**
      * Relationship: Departments added by the user.
@@ -75,10 +69,7 @@ class User extends Authenticatable
     /**
      * Relationship: Permissions of the user.
      */
-    // public function permissions()
-    // {
-    //     return $this->hasMany(UserPermission::class);
-    // }
+
     public function permissions()
     {
         return $this->hasOne(UserPermission::class, 'user_id');
@@ -88,6 +79,26 @@ class User extends Authenticatable
     public function approvedBy()
     {
         return $this->belongsTo(User::class, 'approved_by');
+    }
+
+    /**
+     * Relationship: Merchants approved by the user.
+     */
+    public function approvedMerchants()
+    {
+        return $this->hasMany(Merchant::class, 'approved_by'); 
+    }
+
+    public function department()
+    {
+        return $this->belongsTo(Department::class, 'department'); 
+    }
+
+    public function getDepartmentTitle($departmentId)
+    {
+        
+        $department = Department::find($departmentId);
+        return $department ? $department->title : 'N/A';
     }
     
     

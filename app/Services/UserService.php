@@ -31,7 +31,7 @@ class UserService
             'email' => $data['userEmail'],
             'password' => Hash::make($data['userPassword']), // Hash the password
             'phone' => $data['userPhone'],
-            'department' => $data['userDepartment'] ?? 'null',
+            'department' => $data['department_id'] ?? 'null',
             'role' => $data['userRole'] ?? 'null',
             'status' => $data['userStatus'],
             'address' => $data['userAddress'] ?? 'null',
@@ -53,7 +53,7 @@ class UserService
         $user->name = $data['userFullname'];
         $user->email = $data['userEmail'];
         $user->phone = $data['userPhone'] ?? null;
-        $user->department = $data['userDepartment'] ?? null;
+        $user->department = $data['department_id'] ?? 'null';
         $user->role = $data['userRole'] ?? 'null';
         $user->status = $data['userStatus'];
         $user->address = $data['userAddress'] ?? null;

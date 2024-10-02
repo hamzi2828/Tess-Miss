@@ -22,6 +22,7 @@
                             <th>ID</th>
                             <th>User</th>
                             <th>Address</th>
+                            <th>Department</th>
                             <th>Created At</th>
                             <th>Phone</th>
                             <th>Status</th>
@@ -29,6 +30,7 @@
                         </tr>
                     </thead>
                     <tbody>
+                        
                         @php $i = 1; @endphp
                         @foreach($users as $user)
                         <tr>
@@ -56,6 +58,11 @@
                                 </div>
                             </td>
                             <td>{{ $user->address }}</td>
+                          
+                            <td>
+                                {{ $user->getDepartmentTitle($user->department) }} 
+                            </td>
+                            
                             <td>{{ $user->created_at }}</td>
                             <td>{{ $user->phone }}</td>
                             <td>
@@ -93,6 +100,8 @@
                 </table>
             </div>
         </div>
+
+
     </div>
 </div>
 

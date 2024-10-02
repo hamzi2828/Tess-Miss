@@ -29,7 +29,8 @@ class MerchantsController extends Controller
     public function index()
     {
         // Retrieve all merchants using service layer
-        $merchants = $this->merchantsService->getAllMerchants();
+        $merchants = $this->merchantsService->getAllMerchants(); 
+       
         return view('pages.merchants.merchants-list', compact('merchants'));
     }
 

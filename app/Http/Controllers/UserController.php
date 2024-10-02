@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Department;
 use App\Models\UserPermission;
 use Illuminate\Http\Request;
 use App\Services\UserService;
@@ -22,28 +23,31 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users = User::with('department')->get();
+        
         return view('pages.users.users-list', compact('users'));
     }
 
 
     public function create(){
 
-        return view('pages.users.create-user');
+        $departments = Department::all();
+      
+        return view('pages.users.create-user', compact('departments'));
     }
     /**
      * Store a newly created resource in storage.
-     */
+     */  
     public function store(Request $request)
     {
-        
+       
         // Validate the request data
         $validatedData = $request->validate([
             'userFullname' => 'required|string|max:255',
             'userPassword' => 'required|string|min:8',
             'userEmail' => 'required|email|unique:users,email',
             'userPhone' => 'required|string|max:20',
-            'userDepartment' => 'nullable|string|max:100',
+            'department_id' => 'required|exists:departments,id',
             'userRole' => 'nullable|string',
             'userStatus' => 'required|in:active,inactive',
             'userAddress' => 'nullable|string|max:500',
@@ -61,6 +65,7 @@ class UserController extends Controller
         // Get the user ID from the request
         $userId = $request->input('user_id');
         $user = User::findOrFail($userId);
+        $departments = Department::all();
     
         // Get the user's permissions
         $permissions = UserPermission::firstOrNew(['user_id' => $user->id]);
@@ -68,7 +73,7 @@ class UserController extends Controller
         // Decode the permissions, or use them directly if they're already an array
         $permissionsArray = is_string($permissions->permissions) ? json_decode($permissions->permissions, true) : $permissions->permissions ?? [];
     
-        return view('pages.users.edit-user', compact('user', 'permissionsArray'));
+        return view('pages.users.edit-user', compact('user', 'permissionsArray', 'departments'));
     }
     
 
@@ -84,7 +89,7 @@ class UserController extends Controller
             'userFullname' => 'required|string|max:255',
             'userEmail' => 'required|email|max:255',
             'userPhone' => 'nullable|string|max:20',
-            'userDepartment' => 'nullable|string|max:255',
+            'department_id' => 'required|exists:departments,id',
             'userRole' => 'nullable|string|max:50',
             'userStatus' => 'required|string|in:active,inactive',
             'userPicture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',

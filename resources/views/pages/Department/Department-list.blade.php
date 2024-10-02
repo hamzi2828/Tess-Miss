@@ -23,36 +23,52 @@
                                 <th></th>
                                 <th>ID</th>
                                 <th>Title</th> 
-                                <th>Supervisor</th>
+                                <th>Supervisor Name</th>
+                                <th>Stage</th>
                                 <th>Added By</th>
                                 <th>Date Added</th>
                                 <th class="text-lg-center">Actions</th>
                             </tr>
                         </thead>
                        <tbody>
-                     
+                    
+                   
                             @php $i = 1; @endphp
                             @foreach($departments as $department)
                             <tr>
                                 <td></td>
                                 <td>{{ $i++ }}</td>
                                 <td>{{ $department->title }}</td>
-                                <td>{{ $department->supervisor->name }}</td> <!-- Assuming the relationship to supervisor is defined -->
-                                <td>{{ $department->addedBy->name }}</td> <!-- Assuming the relationship to added_by is defined -->
+                                <td>
+                                    @foreach($department->users as $user)
+                                        {{ $user->name }}<br>
+                                    @endforeach
+                                </td> 
+                                <td>
+                                    {{ $department->stage ?? ' ' }}
+                                </td>
+                                <td>{{ $department->addedBy->name }}</td> 
                                 <td>{{ $department->date_added }}</td>
+
                                 <td class="text-lg-center">
                                     <div class="d-flex justify-content-center align-items-center">
 
-                                        <button class="btn btn-icon btn-text-secondary rounded-pill waves-effect waves-light mx-1 edit-department-btn"
-                                          data-bs-toggle="offcanvas" 
-                                          data-bs-target="#offcanvasEditDepartment" 
-                                          data-id="{{ $department->id }}"
-                                          data-title="{{ $department->title }}"
-                                          data-supervisor="{{ $department->supervisor->id }}"
-                                          data-added_by="{{ $department->addedBy->id }}"
-                                          data-date_added="{{ $department->date_added }}">
-                                          <i class="ti ti-edit"></i>
-                                        </button>
+                                         <!-- Edit Button -->
+                                     <button class="btn btn-icon btn-text-secondary rounded-pill waves-effect waves-light mx-1 edit-department-btn"
+                                         data-bs-toggle="offcanvas" 
+                                         data-bs-target="#offcanvasEditDepartment" 
+                                         data-id="{{ $department->id }}"
+                                         data-title="{{ $department->title }}"
+                                         data-supervisor="{{ $department->supervisor->id ?? '' }}"
+                                         data-added_by="{{ $department->addedBy->id }}"
+                                         data-date_added="{{ $department->date_added }}"
+                                         data-stage="{{ $department->stage }}"
+                                         data-users="{{ $department->users->pluck('name')->implode(', ') }}"> 
+                                         <i class="ti ti-edit"></i>
+                                     </button>
+                                     
+                                     
+                            
 
                                         <form action="{{ route('departments.destroy', $department->id) }}" method="POST" style="display: inline-block;">
                                             @csrf
