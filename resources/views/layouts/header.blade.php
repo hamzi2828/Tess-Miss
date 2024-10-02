@@ -22,38 +22,7 @@
     <!-- /Search --> --}}
 
     <ul class="navbar-nav flex-row align-items-center ms-auto">
-      <!-- Language -->
-      <li class="nav-item dropdown-language dropdown">
-        <a
-          class="nav-link btn btn-text-secondary btn-icon rounded-pill dropdown-toggle hide-arrow"
-          href="javascript:void(0);"
-          data-bs-toggle="dropdown">
-          <i class="ti ti-language rounded-circle ti-md"></i>
-        </a>
-        <ul class="dropdown-menu dropdown-menu-end">
-          <li>
-            <a class="dropdown-item" href="javascript:void(0);" data-language="en" data-text-direction="ltr">
-              <span>English</span>
-            </a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="javascript:void(0);" data-language="fr" data-text-direction="ltr">
-              <span>French</span>
-            </a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="javascript:void(0);" data-language="ar" data-text-direction="rtl">
-              <span>Arabic</span>
-            </a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="javascript:void(0);" data-language="de" data-text-direction="ltr">
-              <span>German</span>
-            </a>
-          </li>
-        </ul>
-      </li>
-      <!--/ Language -->
+  
 
       <!-- Style Switcher -->
       <li class="nav-item dropdown-style-switcher dropdown">
@@ -74,63 +43,12 @@
               <span class="align-middle"><i class="ti ti-moon-stars ti-md me-3"></i>Dark</span>
             </a>
           </li>
-          <li>
-            <a class="dropdown-item" href="javascript:void(0);" data-theme="system">
-              <span class="align-middle"
-                ><i class="ti ti-device-desktop-analytics ti-md me-3"></i>System</span
-              >
-            </a>
-          </li>
+       
         </ul>
       </li>
       <!-- / Style Switcher-->
 
-      <!-- Quick links  -->
-      <li class="nav-item dropdown-shortcuts navbar-dropdown dropdown">
-        <a
-          class="nav-link btn btn-text-secondary btn-icon rounded-pill btn-icon dropdown-toggle hide-arrow"
-          href="javascript:void(0);"
-          data-bs-toggle="dropdown"
-          data-bs-auto-close="outside"
-          aria-expanded="false">
-          <i class="ti ti-layout-grid-add ti-md"></i>
-        </a>
-        <div class="dropdown-menu dropdown-menu-end p-0">
-          <div class="dropdown-menu-header border-bottom">
-            <div class="dropdown-header d-flex align-items-center py-3">
-              <h6 class="mb-0 me-auto">Shortcuts</h6>
-              <a
-                href="javascript:void(0)"
-                class="btn btn-text-secondary rounded-pill btn-icon dropdown-shortcuts-add"
-                data-bs-toggle="tooltip"
-                data-bs-placement="top"
-                title="Add shortcuts"
-                ><i class="ti ti-plus text-heading"></i
-              ></a>
-            </div>
-          </div>
-          <div class="dropdown-shortcuts-list scrollable-container">
-            <div class="row row-bordered overflow-visible g-0">
-              <div class="dropdown-shortcuts-item col">
-                <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                  <i class="ti ti-calendar ti-26px text-heading"></i>
-                </span>
-                <a href="app-calendar.html" class="stretched-link">Calendar</a>
-                <small>Appointments</small>
-              </div>
-              <div class="dropdown-shortcuts-item col">
-                <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                  <i class="ti ti-file-dollar ti-26px text-heading"></i>
-                </span>
-                <a href="app-invoice-list.html" class="stretched-link">Invoice App</a>
-                <small>Manage Accounts</small>
-              </div>
-            </div>
-     
-          </div>
-        </div>
-      </li>
-      <!-- Quick links -->
+
 
       <!-- Notification -->
       <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-2">
@@ -405,8 +323,13 @@
                   </div>
                 </div>
                 <div class="flex-grow-1">
-                  <h6 class="mb-0">John Doe</h6>
-                  <small class="text-muted">Admin</small>
+                  <h6 class="mb-0">
+                    <strong>
+                      {{ Auth::user()->name }}
+
+                    </strong>
+                  </h6>
+                  <small class="text-muted"> {{ Auth::user()->email }}</small>
                 </div>
               </div>
             </a>
@@ -415,53 +338,23 @@
             <div class="dropdown-divider my-1 mx-n2"></div>
           </li>
           <li>
-            <a class="dropdown-item" href="pages-profile-user.html">
+            <a class="dropdown-item" href="#">
               <i class="ti ti-user me-3 ti-md"></i><span class="align-middle">My Profile</span>
             </a>
           </li>
-          <li>
-            <a class="dropdown-item" href="pages-account-settings-account.html">
-              <i class="ti ti-settings me-3 ti-md"></i><span class="align-middle">Settings</span>
-            </a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="pages-account-settings-billing.html">
-              <span class="d-flex align-items-center align-middle">
-                <i class="flex-shrink-0 ti ti-file-dollar me-3 ti-md"></i
-                ><span class="flex-grow-1 align-middle">Billing</span>
-                <span class="flex-shrink-0 badge bg-danger d-flex align-items-center justify-content-center"
-                  >4</span
-                >
-              </span>
-            </a>
-          </li>
-          <li>
-            <div class="dropdown-divider my-1 mx-n2"></div>
-          </li>
-          <li>
-            <a class="dropdown-item" href="pages-pricing.html">
-              <i class="ti ti-currency-dollar me-3 ti-md"></i><span class="align-middle">Pricing</span>
-            </a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="pages-faq.html">
-              <i class="ti ti-question-mark me-3 ti-md"></i><span class="align-middle">FAQ</span>
-            </a>
-          </li>
+   
+   
           <li>
             <div class="d-grid px-2 pt-2 pb-1">
-             
               <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-inline">
-                @csrf
-                <button type="submit" class="btn btn-sm btn-danger d-flex">
-                    <small class="align-middle">Logout</small>
-                    <i class="ti ti-logout ms-2 ti-14px"></i>
-                </button>
-            </form>
-            
-
-              
-            </div>
+                  @csrf
+                  <button type="submit" class="btn btn-sm btn-danger w-100 d-flex">
+                      <small class="align-middle">Logout</small>
+                      <i class="ti ti-logout ms-2 ti-14px"></i>
+                  </button>
+              </form>
+          </div>
+          
           </li>
         </ul>
       </li>

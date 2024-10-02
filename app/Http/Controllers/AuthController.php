@@ -54,8 +54,21 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
+        
         // Attempt to log the user in
         if (Auth::attempt($credentials)) {
+
+            $user = Auth::user();
+         
+            if($user->status === 'inactive'){
+                Auth::logout();
+                // return redirect()->route('login');
+
+                return back()->withErrors([
+                    'email' => 'The provided credentials is inactive.',
+                ]);
+                      
+            }
             // If successful, redirect to the intended page
             return redirect()->intended('/');
         }
@@ -65,7 +78,7 @@ class AuthController extends Controller
             'email' => 'The provided credentials do not match our records.',
         ]);
     }
-
+    
     // Handle logout
     public function logout(Request $request)
     {

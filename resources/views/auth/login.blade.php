@@ -71,7 +71,17 @@
                     </div>
                 </form>
                 <!-- Form ends here -->
-                    
+                @if ($errors->any())
+                <div style="text-align: center; margin: 20px 0;">
+                    <div class="alert alert-danger" style="display: inline-block; width: auto;">
+                        @foreach ($errors->all() as $error)
+                            <p style="margin: 0;">{{ $error }}</p>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
+            
+            
                             
 
               </div>
