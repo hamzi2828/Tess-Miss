@@ -27,7 +27,7 @@
             </div>
 
              <!-- Users Display Field -->
-             <div class="mb-6">
+             <div class="mb-6 d-none">
                 <label class="form-label" for="edit-department-users">Supervisor</label>
                 <input type="text" class="form-control" id="edit-department-users" name="users" readonly />  <!-- This field will display the user names -->
             </div>

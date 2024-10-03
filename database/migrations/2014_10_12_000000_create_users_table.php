@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('department')->nullable();
             $table->string('role')->default('subscriber');
             $table->enum('status', ['active', 'inactive'])->default('active');
+            $table->string('userGender')->nullable();
             $table->string('picture')->nullable(); 
             $table->text('address')->nullable();
             $table->timestamp('email_verified_at')->nullable();

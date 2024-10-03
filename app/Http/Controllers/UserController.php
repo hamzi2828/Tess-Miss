@@ -40,7 +40,7 @@ class UserController extends Controller
      */  
     public function store(Request $request)
     {
-       
+      
         // Validate the request data
         $validatedData = $request->validate([
             'userFullname' => 'required|string|max:255',
@@ -52,6 +52,7 @@ class UserController extends Controller
             'userStatus' => 'required|in:active,inactive',
             'userAddress' => 'nullable|string|max:500',
             'userPicture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            'userGender' => 'nullable|in:male,female',
         ]);
 
         // Use the UserService to create the user and get the created user object
@@ -95,6 +96,7 @@ class UserController extends Controller
             'userPicture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'permissions' => 'nullable|array', 
             'userAddress' => 'nullable|string|max:500',
+            'userGender' => 'nullable|in:male,female',
         
         ]);
         

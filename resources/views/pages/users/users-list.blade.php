@@ -20,11 +20,10 @@
                         <tr>
                             <th></th>
                             <th>ID</th>
-                            <th>User</th>
+                            <th class="text-lg-center">User Details</th>
                             <th>Address</th>
                             <th>Department</th>
                             <th>Created At</th>
-                            <th>Phone</th>
                             <th>Status</th>
                             <th class="text-lg-center">Actions</th>
                         </tr>
@@ -53,7 +52,8 @@
                                     @endif
                                     <div>
                                         <span class="text-heading text-wrap fw-medium">{{ $user->name }}</span><br>
-                                        <small>{{ $user->email }}</small>
+                                        <small>{{ $user->email }}</small><br>
+                                        <small>{{ $user->phone }}</small>
                                     </div>
                                 </div>
                             </td>
@@ -64,7 +64,7 @@
                             </td>
                             
                             <td>{{ $user->created_at }}</td>
-                            <td>{{ $user->phone }}</td>
+                          
                             <td>
                                 @if($user->status == 'active')
                                     <span class="badge bg-success">Active</span>
@@ -82,14 +82,14 @@
                                         <i class="ti ti-edit"></i>
                                     </button>
                             
-                                    <!-- Delete Form -->
-                                    <form action="{{ route('users.destroy', $user->id) }}" method="POST" style="display: inline-block;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-icon btn-text-secondary rounded-pill waves-effect waves-light mx-1">
-                                            <i class="ti ti-trash"></i>
-                                        </button>
-                                    </form>
+                                  <!-- Delete Form -->
+                            <form action="{{ route('users.destroy', $user->id) }}" method="POST" class="delete-user-form" style="display: inline-block;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-icon btn-text-secondary rounded-pill waves-effect waves-light mx-1 delete-user-btn">
+                                    <i class="ti ti-trash"></i>
+                                </button>
+                            </form>
                                   
                                 </div>
                             </td>
@@ -112,6 +112,23 @@
 </form>
 
 <script>
+
+document.addEventListener('DOMContentLoaded', function() {
+    const deleteButtons = document.querySelectorAll('.delete-user-btn');
+
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent form submission
+            const confirmation = confirm("Are you sure you want to delete this user?");
+            if (confirmation) {
+                // Find the closest form and submit it
+                this.closest('form').submit();
+            }
+        });
+    });
+});
+
+
     // Function to filter table rows based on the search input
     function filterTable() {
         let input = document.getElementById('customUserSearch');

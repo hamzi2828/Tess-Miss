@@ -24,7 +24,7 @@ class UserService
         } else {
             $filePath = null; // Set null if no image is uploaded
         }
-
+     
         // Create the user
         return User::create([
             'name' => $data['userFullname'],
@@ -36,6 +36,7 @@ class UserService
             'status' => $data['userStatus'],
             'address' => $data['userAddress'] ?? 'null',
             'picture' => $filePath, // Store image path
+            'userGender' => $data['userGender'] ?? 'null',
         ]);
     }
 
@@ -48,6 +49,8 @@ class UserService
      */
     public function updateUser(User $user, array $data): User
     {
+
+      
         
         // Update user information
         $user->name = $data['userFullname'];
@@ -57,6 +60,7 @@ class UserService
         $user->role = $data['userRole'] ?? 'null';
         $user->status = $data['userStatus'];
         $user->address = $data['userAddress'] ?? null;
+        $user->userGender = $data['userGender'] ?? null;
    
 
             // Handle profile picture upload if there's a new picture

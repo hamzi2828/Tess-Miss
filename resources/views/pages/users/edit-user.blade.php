@@ -34,6 +34,15 @@
                     <label class="form-label fw-medium text-secondary" for="userPhone">Phone</label>
                     <input type="tel" id="userPhone" class="form-control" name="userPhone" value="{{ $user->phone }}" />
                 </div>
+                {{-- Gender --}}
+            <div class="mb-4">
+                <label class="form-label fw-medium text-secondary" for="userGender">Gender</label>
+                <select id="userGender" class="form-select" name="userGender" required>
+                    <option value="male" {{ $user->userGender == 'male' ? 'selected' : '' }}>Male</option>
+                    <option value="female" {{ $user->userGender == 'female' ? 'selected' : '' }}>Female</option>
+                </select>   
+            </div>
+
         
                 <!-- Status -->
                 <div class="mb-4">
