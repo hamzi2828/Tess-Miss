@@ -16,7 +16,7 @@
             <!-- Parent Category Dropdown -->
             <div class="mb-6">
                 <label class="form-label" for="add-parent-category">Parent Category</label>
-                <select id="add-parent-category" class="form-select" name="parentCategory">
+                <select id="add-parent-category" class="form-select select2" name="parentCategory">
                     <option value="">Select Parent Category (optional)</option>
                     @foreach($categories as $category) <!-- Assuming categories are passed from controller -->
                         <option value="{{ $category->id }}">{{ $category->title }}</option>

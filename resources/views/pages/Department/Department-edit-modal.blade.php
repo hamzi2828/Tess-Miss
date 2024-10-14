@@ -19,10 +19,10 @@
                 <label class="form-label" for="edit-department-stage">Stage</label>
                 <select id="edit-department-stage" class="form-select" name="department_stage" required>
                     <option value="">Select Stage</option>
-                    <option value="1">Stage 1</option>
-                    <option value="2">Stage 2</option>
-                    <option value="3">Stage 3</option>
-                    <option value="4">Stage 4</option>
+                    <option value="1">Stage 1 - KYC </option>
+                    <option value="2">Stage 2 - Document </option>
+                    <option value="3">Stage 3 - Sales</option>
+                    <option value="4">Stage 4 - Services</option>
                 </select>
             </div>
 
@@ -36,7 +36,7 @@
             <!-- Supervisor Dropdown -->
             <div class="mb-6">
                 <label class="form-label" for="edit-department-supervisor">All Users</label>
-                <select id="edit-department-supervisor" class="form-select" name="new_supervisor_id" required>
+                <select id="edit-department-supervisor" class="form-select select2" name="new_supervisor_id" required>
                     <option value="">Select Supervisor</option>
                     @foreach($users as $user)
                         <option value="{{ $user->id }}">{{ $user->name }}</option>

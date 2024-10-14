@@ -18,17 +18,17 @@
                 <label class="form-label" for="add-department-stage">Stage</label>
                 <select id="add-department-stage" class="form-select" name="department_stage" required>
                     <option value="">Select Stage</option>
-                    <option value="1">Stage 1</option>
-                    <option value="2">Stage 2</option>
-                    <option value="3">Stage 3</option>
-                    <option value="4">Stage 4</option>
+                    <option value="1">Stage 1 - KYC </option>
+                    <option value="2">Stage 2 - Document </option>
+                    <option value="3">Stage 3 - Sales</option>
+                    <option value="4">Stage 4 - Services</option>
                 </select>
             </div>
 
             <!-- Supervisor Dropdown -->
             <div class="mb-6">
                 <label class="form-label" for="add-department-supervisor">Supervisor</label>
-                <select id="add-department-supervisor" class="form-select" name="supervisor_id" required>
+                <select id="add-department-supervisor" class="form-select select2" name="supervisor_id" required>
                     <option value="">Select Supervisor</option>
                     @foreach($users as $user) <!-- Assuming $users is passed from the controller -->
                         <option value="{{ $user->id }}">{{ $user->name }}</option>

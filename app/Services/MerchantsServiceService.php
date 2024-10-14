@@ -210,4 +210,9 @@ class MerchantsServiceService
         }
     }
 
+    public function deleteMerchants(int $merchant_id): void
+    {
+        Merchant::destroy($merchant_id);
+    }
+
 }

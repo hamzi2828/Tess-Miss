@@ -7,6 +7,7 @@ use App\Models\Department;
 use App\Models\UserPermission;
 use Illuminate\Http\Request;
 use App\Services\UserService;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -26,6 +27,17 @@ class UserController extends Controller
         $users = User::with('department')->get();
         
         return view('pages.users.users-list', compact('users'));
+    }
+
+    public function profile()
+    {
+        $user = Auth::user();
+        $departments = Department::all();
+
+        $permissions = UserPermission::firstOrNew(['user_id' => $user->id]);
+
+   
+        return view('pages.profile.profile', compact('user',  'departments'));
     }
 
 
@@ -71,7 +83,7 @@ class UserController extends Controller
         // Get the user's permissions
         $permissions = UserPermission::firstOrNew(['user_id' => $user->id]);
     
-        // Decode the permissions, or use them directly if they're already an array
+       
         $permissionsArray = is_string($permissions->permissions) ? json_decode($permissions->permissions, true) : $permissions->permissions ?? [];
     
         return view('pages.users.edit-user', compact('user', 'permissionsArray', 'departments'));
@@ -84,7 +96,7 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         
-       
+
         // Validate the request data
         $validatedData = $request->validate([
             'userFullname' => 'required|string|max:255',
@@ -103,7 +115,11 @@ class UserController extends Controller
 
         // Use the UserService to update the user
         $this->userService->updateUser($user, $validatedData);
-        $this->userService->updateUserPermissions($user, $request->input('permissions', []));
+
+    
+        if ($request->has('permissions')) {
+            $this->userService->updateUserPermissions($user, $request->input('permissions', []));
+        }
 
         // Redirect back with a success message
         return redirect()->back()->with('success', 'User updated successfully');

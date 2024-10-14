@@ -146,7 +146,8 @@
                         <input type="text" class="form-control" name="shareholderID[]" value="{{ $shareholder['qid'] }}">
                     </div>
                     <div class="col-md-1">
-                        <button type="button" class="btn btn-danger remove-btn">
+                       
+                        <button type="button" class="btn btn-danger remove-btn" style="margin-top: 20px">
                             <i class="fas fa-trash"></i> <!-- Trash bin icon -->
                         </button>
                     </div>
@@ -213,7 +214,7 @@
                 <input type="text" class="form-control" name="shareholderID[]">
             </div>
             <div class="col-md-1">
-                <button type="button" class="btn btn-danger remove-btn">
+                <button type="button" class="btn btn-danger remove-btn" style="margin-top: 25px">
                     <i class="fas fa-trash"></i>
                 </button>
             </div>

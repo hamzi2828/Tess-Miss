@@ -59,13 +59,20 @@
                                       </button>
                                       
 
-                                        <form action="{{ route('services.destroy', $service->id) }}" method="POST" style="display: inline-block;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-icon btn-text-secondary rounded-pill waves-effect waves-light mx-1">
-                                                <i class="ti ti-trash"></i>
-                                            </button>
-                                        </form>
+                                      <form action="{{ route('services.destroy', $service->id) }}" method="POST" style="display: inline-block;" onsubmit="return confirmDelete()">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-icon btn-text-secondary rounded-pill waves-effect waves-light mx-1">
+                                            <i class="ti ti-trash"></i>
+                                        </button>
+                                    </form>
+                                    
+                                    <script>
+                                        function confirmDelete() {
+                                            return confirm('Are you sure you want to delete this service?');
+                                        }
+                                    </script>
+                                    
 
                                     </div>
                                 </td>

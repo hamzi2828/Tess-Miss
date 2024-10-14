@@ -22,7 +22,7 @@
                             <tr>
                                 <th></th>
                                 <th>ID</th>
-                                <th>Title</th> 
+                                <th>Department Title</th> 
                                 <th>Supervisor Name</th>
                                 <th>Stage</th>
                                 <th>Added By</th>
@@ -45,8 +45,25 @@
                                     @endforeach
                                 </td> 
                                 <td>
-                                    {{ $department->stage ?? ' ' }}
+                                    @switch($department->stage)
+                                        @case(1)
+                                            Stage 1 - KYC
+                                            @break
+                                        @case(2)
+                                            Stage 2 - Document
+                                            @break
+                                        @case(3)
+                                            Stage 3 - Sales
+                                            @break
+                                        @case(4)
+                                            Stage 4 - Services
+                                            @break
+                                        @default
+                                            <!-- Default case for undefined stages -->
+                                            Not Assigned
+                                    @endswitch
                                 </td>
+                                
                                 <td>{{ $department->addedBy->name }}</td> 
                                 <td>{{ $department->date_added }}</td>
 
@@ -70,13 +87,20 @@
                                      
                             
 
-                                        <form action="{{ route('departments.destroy', $department->id) }}" method="POST" style="display: inline-block;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-icon btn-text-secondary rounded-pill waves-effect waves-light mx-1">
-                                                <i class="ti ti-trash"></i>
-                                            </button>
-                                        </form>
+                                     <form action="{{ route('departments.destroy', $department->id) }}" method="POST" style="display: inline-block;" onsubmit="return confirmDelete()">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-icon btn-text-secondary rounded-pill waves-effect waves-light mx-1">
+                                            <i class="ti ti-trash"></i>
+                                        </button>
+                                    </form>
+                                    
+                                    <script>
+                                        function confirmDelete() {
+                                            return confirm('Are you sure you want to delete this department?');
+                                        }
+                                    </script>
+                                    
 
                                     </div>
                                 </td>

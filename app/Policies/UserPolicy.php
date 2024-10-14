@@ -114,7 +114,7 @@ class UserPolicy
         return $this->hasPermission($user, 'approve_services');
     }
 
-    // Users Section
+    // Users Section 
     public function addUser(User $user)
     {
         return $this->hasPermission($user, 'add_user');

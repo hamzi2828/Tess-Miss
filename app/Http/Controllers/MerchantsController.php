@@ -40,8 +40,10 @@ class MerchantsController extends Controller
     public function create_merchants_kfc()
     {
         $title = 'Create Merchants KYC'; 
-        $MerchantCategory = MerchantCategory::all();
-        $Country = Country::all();
+        // $MerchantCategory = MerchantCategory::all();
+
+        $MerchantCategory = MerchantCategory::whereNull('parent_id')->get();
+                $Country = Country::all();
         
 
         return view('pages.merchants.create.create-merchants', compact('title', 'MerchantCategory', 'Country'));
@@ -413,6 +415,11 @@ class MerchantsController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        // Use the service to delete the merchant
+        $this->merchantsService->deleteMerchants($id);
+        
+        // Redirect with a success message
+        return redirect()->route('merchants.index')->with('success', 'Merchant deleted successfully.');
+        
     }
 }
