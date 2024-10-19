@@ -87,6 +87,7 @@ class Merchant extends Model
     {
         return $this->belongsTo(User::class, 'added_by');
     }
+    
 
     // Relationship with the user who approved KYC
     public function approvedBy()

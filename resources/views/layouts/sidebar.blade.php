@@ -145,6 +145,26 @@
         </li>
       </ul>
     </li>
+
+      <li class="menu-item {{ request()->routeIs('activity.logs') ? 'open' : '' }}">
+        <a href="javascript:void(0);" class="menu-link menu-toggle">
+            <i class="menu-icon tf-icons ti ti-clipboard-list"></i>
+            <div data-i18n="Activity Logs">Activity Logs</div>
+        </a>
+        <ul class="menu-sub">
+            <li class="menu-item {{ request()->routeIs('activity.logs') ? 'active' : '' }}">
+                <a href="{{ route('activity.logs') }}" class="menu-link">
+                    <div data-i18n="All-Logs">All Logs</div>
+                </a>
+            </li>
+            <li class="menu-item {{ request()->routeIs('activity.my_logs') ? 'active' : '' }}">
+              <a href="{{ route('activity.my_logs') }}" class="menu-link">
+                  <div data-i18n="All-Logs">My Logs</div>
+              </a>
+          </li>
+        </ul>
+    </li>
+    
     
 
 

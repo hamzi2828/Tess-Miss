@@ -47,9 +47,12 @@ class MerchantsServiceService
         $merchant->merchant_previous_bank = $data['existing_banking_partner']; 
         $merchant->website_month_transaction = $data['monthly_avg_transactions']; 
         $merchant->merchant_date_incorp = $data['date_of_incorporation']; 
-        $merchant->added_by = Auth::user()->id ?? 1; 
+        $merchant->added_by = Auth::user()->id ; 
         $merchant->save();
         
+           // Load the addedBy relationship
+            $merchant->load('addedBy');
+
         // Handle Shareholders
         $this->createShareholders($merchant, $data);
         

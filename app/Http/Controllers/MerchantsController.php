@@ -10,7 +10,10 @@ use App\Models\MerchantService;
 use App\Models\Document;
 use App\Models\Service;
 use App\Models\Country;
+use App\Models\User;
 use App\Services\MerchantsServiceService;
+use App\Notifications\MerchantActivityNotification;
+
 
 use Illuminate\Http\Request;
 
@@ -106,9 +109,21 @@ class MerchantsController extends Controller
              'shareholderID.*' => 'nullable|string|max:255',
          ]);
         
-         // Use the service to handle merchant creation
-         $this->merchantsService->createMerchants($validatedData);
- 
+       // Create the merchant using the service
+        $merchant = $this->merchantsService->createMerchants($validatedData);
+
+        // Get the name of the user who added the merchant
+        $addedByUserName = auth()->user()->name;
+        $notificationMessage ="A new Kyc has been stored";
+
+        // Notify all users in Stage 2 about the new KYC
+        $stage2Users = User::whereHas('department', function ($query) {
+            $query->where('stage', 2);
+        })->get();
+
+        foreach ($stage2Users as $user) {
+            $user->notify(new MerchantActivityNotification('KYC', $merchant, $addedByUserName, $notificationMessage));
+        }
          // Redirect with a success message
          return redirect()->route('merchants.index')->with('success', 'Merchant and Shareholders successfully added.');
      }
@@ -149,6 +164,19 @@ class MerchantsController extends Controller
              }
          }
      
+                // Notify users whose department stage is 2
+            $stage2Users = User::whereHas('department', function ($query) {
+                $query->where('stage', 2);
+            })->get();
+
+            // Notification message content
+            $notificationMessage = 'New documents have been uploaded: ';
+            $addedByUserName = auth()->user()->name;
+
+            foreach ($stage2Users as $user) {
+                $user->notify(new MerchantActivityNotification('Documents', $merchant_id, $addedByUserName, $notificationMessage));
+            }
+
         //  return redirect()->route('merchants.index')->with('success', 'Documents uploaded and saved successfully.');
         return redirect()->route('edit.merchants.documents', ['merchant_id' => $merchant_id])
         ->with('success', 'Documents uploaded and saved successfully.')->withInput($request->all());
@@ -170,6 +198,20 @@ class MerchantsController extends Controller
 
  
      
+            // Notify users whose department stage is 2
+            $stage3Users = User::whereHas('department', function ($query) {
+            $query->where('stage', 3);
+        })->get();
+
+        // Notification message content
+        $notificationMessage = 'New sale have been stored: ';
+        $addedByUserName = auth()->user()->name;
+
+        foreach ($stage3Users as $user) {
+            $user->notify(new MerchantActivityNotification('Sale', $merchant_id, $addedByUserName, $notificationMessage));
+        }
+
+
          // Redirect or return success response
         //  return redirect()->route('merchants.index')->with('success', 'Merchant sales data saved successfully.');
         return redirect()->route('edit.merchants.sales', ['merchant_id' => $merchant_id])
@@ -195,6 +237,21 @@ class MerchantsController extends Controller
      
         //  // Step 3: Redirect with a success message
         //  return redirect()->route('merchants.index')->with('success', 'Services data saved successfully.');
+
+        // Notify users whose department stage is 2
+        $stage4Users = User::whereHas('department', function ($query) {
+            $query->where('stage', 4);
+        })->get();
+
+        // Notification message content
+        $notificationMessage = 'New services have been stored: ';
+        $addedByUserName = auth()->user()->name;
+
+        foreach ($stage4Users as $user) {
+            $user->notify(new MerchantActivityNotification('Services', $merchant_id, $addedByUserName, $notificationMessage));
+        }
+
+                    
      
         return redirect()->route('edit.merchants.services', ['merchant_id' => $merchant_id])
         ->with('success', 'Services data saved successfully.')->withInput($request->all());

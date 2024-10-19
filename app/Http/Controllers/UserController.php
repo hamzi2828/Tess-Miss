@@ -7,6 +7,7 @@ use App\Models\Department;
 use App\Models\UserPermission;
 use Illuminate\Http\Request;
 use App\Services\UserService;
+use App\Models\ActivityLog;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -135,5 +136,31 @@ class UserController extends Controller
 
         // Redirect with a success message
         return redirect()->route('users.index')->with('success', 'User deleted successfully.');
+    }
+
+
+
+        public function activityLogs()
+        {
+            $logs = ActivityLog::with('user')->orderBy('created_at', 'desc')->paginate(10);
+            return view('pages.activity_logs.activity_logs', compact('logs'));
+        }
+
+        public function activityMyLogs()
+        {
+            $logs = ActivityLog::with('user')->where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->paginate(10);
+            return view('pages.activity_logs.activity_logs', compact('logs'));
+        }
+
+        public function markAsRead($id)
+        {
+            Auth::user()->notifications->where('id', $id)->markAsRead();
+            return redirect()->back();
+        }
+
+    public function markAllAsRead()
+    {
+        Auth::user()->unreadNotifications->markAsRead();
+        return redirect()->back();
     }
 }
