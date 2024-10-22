@@ -5,7 +5,16 @@
 
     
 <div class="container-xxl flex-grow-1 container-p-y">
- 
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
     
    <!-- Update the form to POST and set the action to the correct route -->
     <form class="kyc-form" action="{{ route('store.merchants.kyc') }}" method="POST">

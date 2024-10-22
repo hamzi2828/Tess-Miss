@@ -87,3 +87,12 @@
 <!-- Config and Customizer -->
 <script src="{{ asset('assets/vendor/js/template-customizer.js') }}"></script>
 <script src="{{ asset('assets/js/config.js') }}"></script>
+
+
+<link rel="stylesheet" href="{{asset('assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css')}}" />
+<link rel="stylesheet" href="{{asset('assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css')}}" />
+<link rel="stylesheet" href="{{asset('assets/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.css')}}" />
+
+<link rel="stylesheet" href="{{asset('assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css')}}" />
+
+

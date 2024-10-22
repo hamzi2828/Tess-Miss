@@ -88,6 +88,53 @@ class MerchantsController extends Controller
          
      }
 
+     public function store_merchants_kyc(Request $request)
+     {
+         // Dump the request data to check structure
+         // dd($request->all());
+         // Validate the request
+         $validatedData  = $request->validate([
+             'merchant_name' => 'required|string|max:255',
+             'date_of_incorporation' => 'required|date',
+             'merchant_arabic_name' => 'required|string|max:255',
+             'company_registration' => 'required|string|max:255',
+             'company_address' => 'required|string',
+             'mobile_number' => 'required|string|max:15',
+             'company_activities' => 'required|integer',
+             'landline_number' => 'required|string|max:15',
+             'website' => 'nullable|url', 
+            'email' => 'required|email|unique:merchants,merchant_email',
+             'monthly_website_visitors' => 'nullable|integer',
+             'key_point_of_contact' => 'required|string',
+             'monthly_active_users' => 'nullable|integer',
+             'key_point_mobile' => 'required|string|max:15',
+             'monthly_avg_volume' => 'nullable|integer',
+             'existing_banking_partner' => 'nullable|string',
+             'monthly_avg_transactions' => 'required|integer',
+             'shareholderName.*' => 'required|string|max:255',
+             'shareholderNationality.*' => 'required|integer',
+             'shareholderID.*' => 'nullable|string|max:255',
+         ]);
+        
+       // Create the merchant using the service
+        $merchant = $this->merchantsService->createMerchants($validatedData);
+
+        // Get the name of the user who added the merchant
+        $addedByUserName = auth()->user()->name;
+        $notificationMessage ="A new Kyc has been stored";
+
+        // Notify all users in Stage 2 about the new KYC
+        $stage2Users = User::whereHas('department', function ($query) {
+            $query->where('stage', 2);
+        })->get();
+
+        foreach ($stage2Users as $user) {
+            $user->notify(new MerchantActivityNotification('KYC', $merchant, $addedByUserName, $notificationMessage));
+        }
+         // Redirect with a success message
+         return redirect()->route('merchants.index')->with('success', 'Merchant and Shareholders successfully added.');
+     }
+
      public function store_merchants_documents(Request $request)
      {
          // Dump the request data to check structure

@@ -7,20 +7,17 @@
         <div class="app-ecommerce-country">
             <div class="d-flex justify-content-between mb-3">
                 <h4 class="fw-bold">Countries</h4>
-                <div class="d-flex col-lg-5">
-                    <input type="text" id="customCountrySearch" class="form-control me-2" placeholder="Search countries" onkeyup="filterTable()">
-                    <button class="btn btn-primary btn-lg" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAddCountry" style="width: 394px;">
-                        <i class="ti ti-plus me-1"></i> Add Country
-                    </button>
-                </div>
+                <button class="btn btn-primary btn-lg" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAddCountry" style="width: 194px;">
+                    <i class="ti ti-plus me-1"></i> Add Country
+                </button>
             </div>
 
             <div class="card">
                 <div class="card-datatable table-responsive">
-                    <table id="customCountryTable" class="table border-top">
+                    <table id="customCountryTable" class="table border-top display">
                         <thead>
                             <tr>
-                                <th></th>
+                               
                                 <th>ID</th>
                                 <th>Country Code</th> 
                                 <th>Country Name</th>
@@ -43,21 +40,20 @@
                                     $state = 'warning'; // Yellow for 'Medium Risk'
                                 } elseif ($country->country_status == 'High Risk') {
                                     $state = 'danger'; // Red for 'High Risk'
+                                } elseif ($country->country_status == 'Low Risk') {
+                                    $state = 'primary'; // Blue for 'Low Risk'
                                 }
                             @endphp
                             <tr>
-                                <td></td>
-                                <td>{{ $i++ }}</td>
+                               
+                                <td>{{ $country->id }}</td>
                                 <td>{{ $country->country_code }}</td>
                                 <td>{{ $country->country_name }}</td>
                                 <td>
-                                   
                                     <span class="badge bg-{{ $state }}"> {{ $country->country_status }}</span>
-                                   
                                 </td>
                                 <td class="text-lg-center">
                                     <div class="d-flex justify-content-center align-items-center">
-            
                                         <button class="btn btn-icon btn-text-secondary rounded-pill waves-effect waves-light mx-1 edit-country-btn"
                                         data-bs-toggle="offcanvas" 
                                         data-bs-target="#offcanvasEditCountry" 
@@ -67,7 +63,7 @@
                                         data-status="{{ $country->country_status }}">
                                         <i class="ti ti-edit"></i>
                                       </button>
-            
+
                                         <form action="{{ route('countries.destroy', $country->id) }}" method="POST" style="display: inline-block;">
                                             @csrf
                                             @method('DELETE')
@@ -75,7 +71,6 @@
                                                 <i class="ti ti-trash"></i>
                                             </button>
                                         </form>
-            
                                     </div>
                                 </td>
                             </tr>
@@ -85,8 +80,6 @@
                 </div>
             </div>
             
-            
-
             {{-- Create Country Modal --}}
             @include('pages.countries.countries-create-modal')
 
@@ -98,33 +91,19 @@
     <div class="content-backdrop fade"></div>
 </div>
 
+@endsection
+
+@push('script')
 <script>
-    // Function to filter table rows based on the search input
-    function filterTable() {
-        let input = document.getElementById('customCountrySearch');
-        let filter = input.value.toLowerCase();
-        let table = document.getElementById('customCountryTable');
-        let rows = table.getElementsByTagName('tr');
-
-        for (let i = 1; i < rows.length; i++) {
-            let cells = rows[i].getElementsByTagName('td');
-            let match = false;
-
-            for (let j = 0; j < cells.length; j++) {
-                let cellValue = cells[j].textContent || cells[j].innerText;
-                if (cellValue.toLowerCase().indexOf(filter) > -1) {
-                    match = true;
-                    break;
-                }
-            }
-
-            if (match) {
-                rows[i].style.display = "";
-            } else {
-                rows[i].style.display = "none";
-            }
-        }
-    }
+    $(document).ready(function() {
+        $('#customCountryTable').DataTable({
+            "paging": true,      // Enable pagination
+            "ordering": true,    // Enable sorting
+            "info": true,        // Display table information
+            "searching": true,   // Enable search functionality
+            "order": [[ 3, 'asc' ]] // Default sorting by Country Name (column index 3), ascending
+        });
+    });
 </script>
 
-@endsection
+@endpush

@@ -5,19 +5,16 @@
 <div class="content-wrapper">
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="app-ecommerce-department">
-            <div class="d-flex justify-content-between mb-3">
+            <div class="d-flex justify-content-between mb-6">
                 <h4 class="fw-bold">Departments</h4>
-                <div class="d-flex col-lg-5">
-                    <input type="text" id="customDepartmentSearch" class="form-control me-2" placeholder="Search departments" onkeyup="filterTable()">
-                    <button class="btn btn-primary btn-lg" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAddDepartment" style="width: 394px;">
-                        <i class="ti ti-plus me-1"></i> Add Department
-                    </button>
-                </div>
+                <button class="btn btn-primary btn-lg" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAddDepartment" style="width: 254px;">
+                    <i class="ti ti-plus me-1"></i> Add Department
+                </button>
             </div>
 
             <div class="card">
                 <div class="card-datatable table-responsive">
-                    <table id="customDepartmentTable" class="table border-top">
+                    <table id="customDepartmentTable" class="table border-top display">
                         <thead>
                             <tr>
                                 <th></th>
@@ -30,9 +27,7 @@
                                 <th class="text-lg-center">Actions</th>
                             </tr>
                         </thead>
-                       <tbody>
-                    
-                   
+                        <tbody>
                             @php $i = 1; @endphp
                             @foreach($departments as $department)
                             <tr>
@@ -59,33 +54,28 @@
                                             Stage 4 - Services
                                             @break
                                         @default
-                                            <!-- Default case for undefined stages -->
                                             Not Assigned
                                     @endswitch
                                 </td>
                                 
-                                <td>{{ $department->addedBy->name }}</td> 
+                                <td>{{ $department->addedBy->name }}</td>
                                 <td>{{ $department->date_added }}</td>
 
                                 <td class="text-lg-center">
                                     <div class="d-flex justify-content-center align-items-center">
 
-                                         <!-- Edit Button -->
-                                     <button class="btn btn-icon btn-text-secondary rounded-pill waves-effect waves-light mx-1 edit-department-btn"
-                                         data-bs-toggle="offcanvas" 
-                                         data-bs-target="#offcanvasEditDepartment" 
-                                         data-id="{{ $department->id }}"
-                                         data-title="{{ $department->title }}"
-                                         data-supervisor="{{ $department->supervisor->id ?? '' }}"
-                                         data-added_by="{{ $department->addedBy->id }}"
-                                         data-date_added="{{ $department->date_added }}"
-                                         data-stage="{{ $department->stage }}"
-                                         data-users="{{ $department->users->pluck('name')->implode(', ') }}"> 
-                                         <i class="ti ti-edit"></i>
-                                     </button>
-                                     
-                                     
-                            
+                                        <button class="btn btn-icon btn-text-secondary rounded-pill waves-effect waves-light mx-1 edit-department-btn"
+                                        data-bs-toggle="offcanvas" 
+                                        data-bs-target="#offcanvasEditDepartment" 
+                                        data-id="{{ $department->id }}"
+                                        data-title="{{ $department->title }}"
+                                        data-supervisor="{{ $department->supervisor->id ?? '' }}"
+                                        data-added_by="{{ $department->addedBy->id }}"
+                                        data-date_added="{{ $department->date_added }}"
+                                        data-stage="{{ $department->stage }}"
+                                        data-users="{{ $department->users->pluck('name')->implode(', ') }}">
+                                        <i class="ti ti-edit"></i>
+                                      </button>
 
                                      <form action="{{ route('departments.destroy', $department->id) }}" method="POST" style="display: inline-block;" onsubmit="return confirmDelete()">
                                         @csrf
@@ -100,13 +90,12 @@
                                             return confirm('Are you sure you want to delete this department?');
                                         }
                                     </script>
-                                    
 
                                     </div>
                                 </td>
                             </tr>
                             @endforeach
-                        </tbody> 
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -122,33 +111,19 @@
     <div class="content-backdrop fade"></div>
 </div>
 
-<script>
-    // Function to filter table rows based on the search input
-    function filterTable() {
-        let input = document.getElementById('customDepartmentSearch');
-        let filter = input.value.toLowerCase();
-        let table = document.getElementById('customDepartmentTable');
-        let rows = table.getElementsByTagName('tr');
-
-        for (let i = 1; i < rows.length; i++) {
-            let cells = rows[i].getElementsByTagName('td');
-            let match = false;
-
-            for (let j = 0; j < cells.length; j++) {
-                let cellValue = cells[j].textContent || cells[j].innerText;
-                if (cellValue.toLowerCase().indexOf(filter) > -1) {
-                    match = true;
-                    break;
-                }
-            }
-
-            if (match) {
-                rows[i].style.display = "";
-            } else {
-                rows[i].style.display = "none";
-            }
-        }
-    }
-</script>
-
 @endsection
+
+@push('script')
+<!-- Initialize DataTables -->
+<script>
+    $(document).ready(function() {
+        $('#customDepartmentTable').DataTable({
+            "paging": true,      // Enable pagination
+            "ordering": true,    // Enable sorting
+            "info": true,        // Display table information
+            "searching": true,   // Enable search functionality
+            "order": [[ 2, 'asc' ]] // Default sorting by Department Title (column index 2), ascending
+        });
+    });
+</script>
+@endpush
