@@ -33,7 +33,7 @@
                             @foreach($merchants as $merchant)
                             <tr>
                                 <!-- S.No -->
-                                <td class="text-lg-center border-left border-right">{{ $i++ }}</td>
+                                <td class="text-lg-center border-left border-right">{{ $merchant['id'] }}</td>
                     
                                 <!-- Merchant Details (Name & Email) -->
                                 <td class="text-lg-center border-left border-right">
@@ -45,8 +45,9 @@
                                 <!-- KYC Details (Added By / Approved By) -->
                                 <td class="text-lg-center border-left border-right">
                                     @if (!empty($merchant['added_by']) || !empty($merchant['approved_by']))
-                                        Added: {{ $merchant['added_by']['name'] ?? 'Pending' }}<br>
-                                        Approved: {{ $merchant['approved_by']['name'] ?? 'Pending' }}
+                                   
+                                        <strong>  Added:</strong> {{ $merchant['added_by']['name'] ?? 'Pending' }}<br>
+                                         <strong>  Approved:</strong> {{ $merchant['approved_by']['name'] ?? 'Pending' }}
                                     @else
                                         <span class="text-danger">Pending</span>
                                     @endif
@@ -55,8 +56,8 @@
                                 <!-- Sales Details (Added By / Approved By) -->
                                 <td class="text-lg-center border-left border-right">
                                     @if (!empty($merchant['sales']))
-                                        Added: {{ $merchant['sales'][0]['added_by']['name'] ?? 'Pending' }}<br>
-                                        Approved: {{ $merchant['sales'][0]['approved_by']['name'] ?? 'Pending' }}
+                                        <strong>  Added:</strong> {{ $merchant['sales'][0]['added_by']['name'] ?? 'Pending' }}<br>
+                                         <strong>  Approved:</strong> {{ $merchant['sales'][0]['approved_by']['name'] ?? 'Pending' }}
                                     @else
                                         <span class="text-danger">Pending</span>
                                     @endif
@@ -65,8 +66,8 @@
                                 <!-- Documents Details (Added By / Approved By) -->
                                 <td class="text-lg-center border-left border-right">
                                     @if (!empty($merchant['documents']))
-                                        Added: {{ $merchant['documents'][0]['added_by']['name'] ?? 'Pending' }}<br>
-                                        Approved: {{ $merchant['documents'][0]['approved_by']['name'] ?? 'Pending' }}
+                                        <strong>  Added:</strong> {{ $merchant['documents'][0]['added_by']['name'] ?? 'Pending' }}<br>
+                                         <strong>  Approved:</strong> {{ $merchant['documents'][0]['approved_by']['name'] ?? 'Pending' }}
                                     @else
                                         <span class="text-danger">Pending</span>
                                     @endif
@@ -75,8 +76,8 @@
                                 <!-- Services Details (Added By / Approved By) -->
                                 <td class="text-lg-center border-left border-right">
                                     @if (!empty($merchant['services']))
-                                        Added: {{ $merchant['services'][0]['added_by']['name'] ?? 'Pending' }}<br>
-                                        Approved: {{ $merchant['services'][0]['approved_by']['name'] ?? 'Pending' }}
+                                        <strong>  Added:</strong> {{ $merchant['services'][0]['added_by']['name'] ?? 'Pending' }}<br>
+                                         <strong>  Approved:</strong> {{ $merchant['services'][0]['approved_by']['name'] ?? 'Pending' }}
                                     @else
                                         <span class="text-danger">Pending</span>
                                     @endif

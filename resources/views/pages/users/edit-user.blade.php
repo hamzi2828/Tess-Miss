@@ -81,12 +81,28 @@
                 </script>
         
                 <!-- Current Profile Picture -->
-                @if($user->picture)
+                {{-- @if($user->picture)
                 <div class="mb-4 text-center">
                     <label class="form-label fw-medium text-secondary" for="currentUserPicture">Current Profile Picture</label><br>
                     <img src="{{ asset('storage/' . $user->picture) }}" alt="Current Profile Picture" class="rounded-circle shadow-sm" style="max-width: 150px; height: auto;">
                 </div>
-                @endif
+                @endif --}}
+
+                       <!-- Current Profile Picture -->
+                       @if($user->picture)
+                       <div class="mb-4 text-center position-relative">
+                           <label class="form-label fw-medium text-secondary" for="currentUserPicture">Current Profile Picture</label><br>
+                           <img src="{{ asset('storage/' . $user->picture) }}" alt="Current Profile Picture" class="rounded-circle shadow-sm" style="max-width: 150px; height: auto;">
+                           
+                           <!-- Add a delete image icon over the image -->
+                           <button type="button" class="btn btn-danger btn-sm position-absolute" id="deleteImageBtn" style="top: 10px; right: 10px; border-radius: 50%;">
+                               <i class="fas fa-trash-alt"></i>
+                           </button>
+   
+                           <!-- Hidden input to handle image deletion -->
+                           <input type="hidden" name="deleteUserPicture" id="deleteUserPictureInput" value="0">
+                       </div>
+                       @endif
         
                 <!-- File input -->
                 <div class="mb-4">
@@ -266,6 +282,14 @@
 </form>
 </div>
 
+<script>
+    document.getElementById('deleteImageBtn').addEventListener('click', function() {
+        if (confirm('Are you sure you want to delete the profile picture?')) {
+            document.getElementById('deleteUserPictureInput').value = 1; // Set hidden input value to 1
+            this.closest('.mb-4').style.display = 'none'; // Hide the image section
+        }
+    });
+</script>
 
 <script>
     function handlePermissionChange(approveId, changeId, addId, viewId) {

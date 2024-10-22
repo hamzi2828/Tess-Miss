@@ -142,7 +142,7 @@
                         </select>
                     </div>
                     <div class="col-md-3">
-                        <label for="shareholderID" class="form-label">Shareholder GID</label>
+                        <label for="shareholderID" class="form-label">Shareholder QID</label>
                         <input type="text" class="form-control" name="shareholderID[]" value="{{ $shareholder['qid'] }}">
                     </div>
                     <div class="col-md-1">
@@ -210,7 +210,7 @@
                 </select>
             </div>
             <div class="col-md-3">
-                <label for="shareholderID" class="form-label">Shareholder GID</label>
+                <label for="shareholderID" class="form-label">Shareholder QID</label>
                 <input type="text" class="form-control" name="shareholderID[]">
             </div>
             <div class="col-md-1">

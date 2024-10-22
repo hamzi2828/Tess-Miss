@@ -52,7 +52,7 @@
                     <label for="mobileNumber" class="form-label">Mobile Number <span class="required-asterisk">*</span></label>
                     <input type="tel" class="form-control" id="mobileNumber" name="mobile_number" required>
                 </div>
-
+ 
                 <div class="col-md-6">
                     <label for="companyActivities" class="form-label">Company Principal Activities <span class="required-asterisk">*</span></label>
                     <select class="form-select select2" id="companyActivities" name="company_activities" required>
@@ -148,7 +148,7 @@
                     </div>
                     
                     <div class="col-md-3">
-                        <label for="shareholderID" class="form-label">Shareholder GID</label>
+                        <label for="shareholderID" class="form-label">Shareholder QID</label>
                         <input type="text" class="form-control" name="shareholderID[]">
                     </div>
                 </div>
@@ -195,7 +195,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 </select>
             </div>
             <div class="col-md-3">
-                <label for="shareholderID" class="form-label">Shareholder GID</label>
+                <label for="shareholderID" class="form-label">Shareholder QID</label>
                 <input type="text" class="form-control" name="shareholderID[]">
             </div>
             <div class="col-md-1">

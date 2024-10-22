@@ -50,8 +50,7 @@ class UserService
     public function updateUser(User $user, array $data): User
     {
 
-      
-        
+     
         // Update user information
         $user->name = $data['userFullname'];
         $user->email = $data['userEmail'];
@@ -62,6 +61,17 @@ class UserService
         $user->address = $data['userAddress'] ?? null;
         $user->userGender = $data['userGender'] ?? null;
    
+
+          // Handle profile picture deletion if requested
+        if (isset($data['deleteUserPicture']) && $data['deleteUserPicture'] == 1) {
+            // Remove the existing picture if it exists
+            if ($user->picture && Storage::disk('public')->exists($user->picture)) {
+                Storage::disk('public')->delete($user->picture);
+            }
+
+            // Set the picture field to null
+            $user->picture = null;
+        }
 
             // Handle profile picture upload if there's a new picture
         if (isset($data['userPicture']) && $data['userPicture']->isValid()) {

@@ -5,7 +5,7 @@
 <div class="container-xxl flex-grow-1 container-p-y">
     <div class="app-ecommerce-user">
         <div class="d-flex justify-content-between mb-3">
-            <h4 class="fw-bold">Users</h4>
+            <h4 class="fw-bold">All Users</h4>
             <div class="d-flex col-lg-5">
                 <input type="text" id="customUserSearch" class="form-control me-2" placeholder="Search users" onkeyup="filterTable()">
               
@@ -34,7 +34,7 @@
                         @foreach($users as $user)
                         <tr>
                             <td></td>
-                            <td>{{ $i++ }}</td>
+                            <td>{{ $user->id }}</td>
                             <td>
                                 <div class="d-flex align-items-center">
                                     @if($user->picture)

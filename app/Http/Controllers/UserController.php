@@ -110,9 +110,10 @@ class UserController extends Controller
             'permissions' => 'nullable|array', 
             'userAddress' => 'nullable|string|max:500',
             'userGender' => 'nullable|in:male,female',
+            'deleteUserPicture'=>'nullable',
         
         ]);
-        
+     
 
         // Use the UserService to update the user
         $this->userService->updateUser($user, $validatedData);

@@ -45,7 +45,8 @@ class MerchantsController extends Controller
         $title = 'Create Merchants KYC'; 
         // $MerchantCategory = MerchantCategory::all();
 
-        $MerchantCategory = MerchantCategory::whereNull('parent_id')->get();
+        $MerchantCategory = MerchantCategory::all();
+      
                 $Country = Country::all();
         
 
@@ -53,11 +54,16 @@ class MerchantsController extends Controller
     }
     
     
-    public function create_merchants_documents()
+    public function create_merchants_documents(Request $request)
     {
+        if ($request->has('merchant_id')) {
+            $merchant_id = $request->input('merchant_id');
+            $merchant_shareholders = MerchantShareholder::where('merchant_id', $merchant_id)->get();
+        }
         $merchant_documents = Document::all();
-        $title = 'Create Merchants Documents'; // You can set your title here
-        return view('pages.merchants.create.create-merchants-documents', compact('merchant_documents', 'title'));
+        $title = 'Create Merchants Documents'; 
+
+        return view('pages.merchants.create.create-merchants-documents', compact('merchant_documents', 'title','merchant_shareholders'));
     }
     
 
@@ -82,105 +88,84 @@ class MerchantsController extends Controller
          
      }
 
-     public function store_merchants_kyc(Request $request)
-     {
-        
-         // Validate the request
-         $validatedData  = $request->validate([
-             'merchant_name' => 'required|string|max:255',
-             'date_of_incorporation' => 'required|date',
-             'merchant_arabic_name' => 'required|string|max:255',
-             'company_registration' => 'required|string|max:255',
-             'company_address' => 'required|string',
-             'mobile_number' => 'required|string|max:15',
-             'company_activities' => 'required|integer',
-             'landline_number' => 'required|string|max:15',
-             'website' => 'nullable|url', 
-             'email' => 'required|email',
-             'monthly_website_visitors' => 'nullable|integer',
-             'key_point_of_contact' => 'required|string',
-             'monthly_active_users' => 'nullable|integer',
-             'key_point_mobile' => 'required|string|max:15',
-             'monthly_avg_volume' => 'nullable|integer',
-             'existing_banking_partner' => 'nullable|string',
-             'monthly_avg_transactions' => 'required|integer',
-             'shareholderName.*' => 'required|string|max:255',
-             'shareholderNationality.*' => 'required|integer',
-             'shareholderID.*' => 'nullable|string|max:255',
-         ]);
-        
-       // Create the merchant using the service
-        $merchant = $this->merchantsService->createMerchants($validatedData);
-
-        // Get the name of the user who added the merchant
-        $addedByUserName = auth()->user()->name;
-        $notificationMessage ="A new Kyc has been stored";
-
-        // Notify all users in Stage 2 about the new KYC
-        $stage2Users = User::whereHas('department', function ($query) {
-            $query->where('stage', 2);
-        })->get();
-
-        foreach ($stage2Users as $user) {
-            $user->notify(new MerchantActivityNotification('KYC', $merchant, $addedByUserName, $notificationMessage));
-        }
-         // Redirect with a success message
-         return redirect()->route('merchants.index')->with('success', 'Merchant and Shareholders successfully added.');
-     }
-     
-
      public function store_merchants_documents(Request $request)
      {
+         // Dump the request data to check structure
+         // dd($request->all());
+     
+         // Validate the request
          $validatedData = $request->validate([
              'document_*' => 'required|file|mimes:jpg,jpeg,png,pdf,doc,docx,xls,xlsx|max:2048',
              'expiry_*' => 'nullable|date',
          ]);
-
+     
+         // Get the merchant ID from the request
          $merchant_id = $request->input('merchant_id');
-     
+         
+         // Loop through all request data
          foreach ($request->all() as $key => $value) {
-             if (strpos($key, 'document_') === 0) {
-                 $document_id = str_replace('document_', '', $key);
+             // Check if the key starts with 'document_' and ensure it contains enough parts
+             if (strpos($key, 'document_') === 0 && $request->hasFile($key)) {
+                 // Extract parts of the key
+                 // The key looks like "document_2_28_Silas95"
+                 $keyParts = explode('_', $key);
      
-                 if ($request->hasFile($key)) {
-                     $file = $request->file($key);
-                     $fileName = time() . '_' . $file->getClientOriginalName();
-                     $filePath = $file->storeAs('public/documents', $fileName);
-     
-                     $expiryDateKey = 'expiry_' . $document_id;
-                     $expiryDate = $request->input($expiryDateKey, null);
-     
-                     MerchantDocument::create([
-                         'title' => $file->getClientOriginalName(),
-                         'document' => $filePath,
-                         'date_expiry' => $expiryDate,
-                         'merchant_id' => $merchant_id,
-                         'added_by' => auth()->user()->id,
-                         'document_type' => $file->getClientMimeType(),
-                         'emailed' => false,
-                         'status' => true,
-                     ]);
+                 // Ensure there are enough parts to avoid undefined index errors
+                 if (count($keyParts) >= 4) {
+                     $document_id = $keyParts[1]; // Document ID
+                     $shareholder_id = $keyParts[2]; // Shareholder ID
+                     $shareholder_name = $keyParts[3]; // Shareholder name (last part)
+                 } else {
+                     // If parts are missing, skip this iteration
+                     continue;
                  }
+     
+                 // Handle the file upload
+                 $file = $request->file($key);
+                 $fileName = time() . '_' . $shareholder_name . '_' . $file->getClientOriginalName(); // Append shareholder 
+                 
+                 $filePath = $file->storeAs('public/documents', $fileName);
+     
+                 // Handle expiry date
+                 $expiryDateKey = 'expiry_' . $document_id . '_' . $shareholder_id . '_' . $shareholder_name; // Construct expiry key with document ID, shareholder ID, and name
+                 $expiryDate = $request->input($expiryDateKey, null);
+     
+                 // Save the document
+                 MerchantDocument::create([
+                     'title' => $fileName,
+                     'document' => $filePath,
+                     'date_expiry' => $expiryDate,
+                     'merchant_id' => $merchant_id,
+                     'added_by' => auth()->user()->id,
+                     'document_type' => $file->getClientMimeType(),
+                     'emailed' => false,
+                     'status' => true,
+                     'shareholder_id' => $shareholder_id, // Store shareholder ID if needed
+                     'shareholder_name' => $shareholder_name, // Optionally store shareholder name
+                 ]);
              }
          }
      
-                // Notify users whose department stage is 2
-            $stage2Users = User::whereHas('department', function ($query) {
-                $query->where('stage', 2);
-            })->get();
-
-            // Notification message content
-            $notificationMessage = 'New documents have been uploaded: ';
-            $addedByUserName = auth()->user()->name;
-
-            foreach ($stage2Users as $user) {
-                $user->notify(new MerchantActivityNotification('Documents', $merchant_id, $addedByUserName, $notificationMessage));
-            }
-
-        //  return redirect()->route('merchants.index')->with('success', 'Documents uploaded and saved successfully.');
-        return redirect()->route('edit.merchants.documents', ['merchant_id' => $merchant_id])
-        ->with('success', 'Documents uploaded and saved successfully.')->withInput($request->all());
+         // Notify users whose department stage is 2
+         $stage2Users = User::whereHas('department', function ($query) {
+             $query->where('stage', 2);
+         })->get();
+     
+         // Notification message content
+         $notificationMessage = 'New documents have been uploaded: ';
+         $addedByUserName = auth()->user()->name;
+         $merchant = $merchant_id;
+     
+         foreach ($stage2Users as $user) {
+             $user->notify(new MerchantActivityNotification('Documents', $merchant, $addedByUserName, $notificationMessage));
+         }
+     
+         // Redirect after saving documents
+         return redirect()->route('edit.merchants.documents', ['merchant_id' => $merchant_id])
+             ->with('success', 'Documents uploaded and saved successfully.')
+             ->withInput($request->all());
      }
+     
      
 
      public function store_merchants_sales(Request $request)

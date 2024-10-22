@@ -50,8 +50,9 @@ class MerchantActivityNotification extends Notification implements ShouldQueue
     {
         return [
             'activity_type' => $this->activityType,
-            'merchant_id' => $this->merchant->id,
-            'merchant_name' => $this->merchant->merchant_name,
+            // 'merchant_id' => $this->merchant->id,
+            'merchant_id' => $this->merchant, 
+            'merchant_name' => $this->merchant->merchant_name ?? '',
             'added_by' => $this->addedByUser, 
             'message' =>  $this->notificationMessage,
         ];

@@ -35,7 +35,7 @@
                             <tr>
                                 <td></td>
                                 <td>{{ $i++ }}</td>
-                                <td>{{ $category->parentCategory->title ?? 'None' }}</td> <!-- Display parent category -->
+                                <td><strong>{{ $category->parentCategory->title ?? 'None' }}</strong></td> <!-- Display parent category -->
                                 <td>{{ $category->title }}</td>
                                 <td>{{ $category->addedBy->name ?? 'N/A' }}</td> <!-- Assuming relationship to added_by is defined -->
                                 <td>{{ $category->created_at->format('Y-m-d') }}</td>
