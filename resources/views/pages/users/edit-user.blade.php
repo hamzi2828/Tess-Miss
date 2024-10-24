@@ -95,9 +95,10 @@
                            <img src="{{ asset('storage/' . $user->picture) }}" alt="Current Profile Picture" class="rounded-circle shadow-sm" style="max-width: 150px; height: auto;">
                            
                            <!-- Add a delete image icon over the image -->
-                           <button type="button" class="btn btn-danger btn-sm position-absolute" id="deleteImageBtn" style="top: 10px; right: 10px; border-radius: 50%;">
-                               <i class="fas fa-trash-alt"></i>
-                           </button>
+                           <a class="btn-sm position-absolute" id="deleteImageBtn" style="top: 10px; right: 10px;">
+                               <i class=" ti ti-trash ti-sm mx-2 "></i>
+                              
+                           </a>
    
                            <!-- Hidden input to handle image deletion -->
                            <input type="hidden" name="deleteUserPicture" id="deleteUserPictureInput" value="0">

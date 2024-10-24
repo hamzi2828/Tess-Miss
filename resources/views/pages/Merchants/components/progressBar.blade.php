@@ -25,7 +25,7 @@
         background-color: #6c757d; /* Default gray */
         color: white;
         border-radius: 50%;
-        padding: 10px 15px;
+        padding: 12px 20px;
         font-weight: bold;
         margin-right: 10px;
         display: inline-block;

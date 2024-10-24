@@ -45,8 +45,11 @@
                 
                     <!-- Full Name -->
                     <div class="mb-4">
-                        <label class="form-label fw-medium text-secondary" for="userFullname">Full Name</label>
+                        <label class="form-label fw-medium text-secondary" for="userFullname">Full Name
+                             <span class="required-asterisk text-danger">*</span>
+                         </label>
                         <input type="text" class="form-control" id="userFullname" name="userFullname" value="{{ old('userFullname') }}" required />
+                         
                         @if($errors->has('userFullname'))
                             <div class="text-danger">{{ $errors->first('userFullname') }}</div>
                         @endif
@@ -54,7 +57,7 @@
                 
                     <!-- Email -->
                     <div class="mb-4">
-                        <label class="form-label fw-medium text-secondary" for="userEmail">Email</label>
+                        <label class="form-label fw-medium text-secondary" for="userEmail">Email  <span class="required-asterisk text-danger">*</span> </label>
                         <input type="email" id="userEmail" class="form-control" name="userEmail" value="{{ old('userEmail') }}" required />
                         @if($errors->has('userEmail'))
                             <div class="text-danger">{{ $errors->first('userEmail') }}</div>
@@ -63,7 +66,7 @@
                 
                     <!-- Phone -->
                     <div class="mb-4">
-                        <label class="form-label fw-medium text-secondary" for="userPhone">Phone</label>
+                        <label class="form-label fw-medium text-secondary" for="userPhone">Phone  <span class="required-asterisk text-danger">*</span></label>
                         <input type="tel" id="userPhone" class="form-control" name="userPhone" value="{{ old('userPhone') }}" />
                         @if($errors->has('userPhone'))
                             <div class="text-danger">{{ $errors->first('userPhone') }}</div>
@@ -84,7 +87,7 @@
                 
                     <!-- Department -->
                     <div class="mb-4">
-                        <label for="selectDepartment" class="form-label fw-medium text-secondary">Department</label>
+                        <label for="selectDepartment" class="form-label fw-medium text-secondary">Department  <span class="required-asterisk text-danger">*</span></label>
                         <select class="form-select select2" id="selectDepartment" name="department_id" required>
                             <option selected>Select Department</option>
                             @foreach($departments as $department)
@@ -100,7 +103,7 @@
                 
                     <!-- Password -->
                     <div class="mb-4">
-                        <label class="form-label fw-medium text-secondary" for="userPassword">Password</label>
+                        <label class="form-label fw-medium text-secondary" for="userPassword">Password  <span class="required-asterisk text-danger">*</span></label>
                         <input type="password" id="userPassword" class="form-control" name="userPassword" required />
                         @if($errors->has('userPassword'))
                             <div class="text-danger">{{ $errors->first('userPassword') }}</div>

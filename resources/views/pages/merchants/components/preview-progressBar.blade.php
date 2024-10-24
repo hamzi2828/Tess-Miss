@@ -107,39 +107,3 @@
 
 </style>
 
-<div class="header text-center mb-4" style="background-color: rgb(115,103,240); padding:2px; border-radius: 8px;">
-    <h2 style="color: white;">{{ $title }}</h2>
-    
-</div><div class="step-container">
-    <!-- Step 1: KYC -->
-    <div class="step {{ in_array(Route::currentRouteName(), ['edit.merchants.kyc', 'edit.merchants.documents', 'create.merchants.documents','edit.merchants.sales', 'create.merchants.sales', 'edit.merchants.services', 'create.merchants.services']) ? 'active' : '' }}">
-        <a href="{{ route('edit.merchants.kyc', ['merchant_id' => request()->merchant_id]) }}">
-            <div class="step-number">1</div>
-            <div class="step-title">KYC</div>
-        </a>
-    </div>
-
-    <!-- Step 2: Documents -->
-    <div class="step {{ in_array(Route::currentRouteName(), ['edit.merchants.documents', 'create.merchants.documents','edit.merchants.sales', 'create.merchants.sales', 'edit.merchants.services', 'create.merchants.services']) ? 'active' : '' }}">
-        <a href="{{ route('edit.merchants.documents', ['merchant_id' => request()->merchant_id]) }}">
-            <div class="step-number">2</div>
-            <div class="step-title">Documents</div>
-        </a>
-    </div>
-
-    <!-- Step 3: Sales -->
-    <div class="step {{ in_array(Route::currentRouteName(), ['edit.merchants.sales', 'create.merchants.sales', 'edit.merchants.services', 'create.merchants.services']) ? 'active' : '' }}">
-        <a href="{{ route('edit.merchants.sales', ['merchant_id' => request()->merchant_id]) }}">
-            <div class="step-number">3</div>
-            <div class="step-title">Sales</div>
-        </a>
-    </div>
-
-    <!-- Step 4: Services -->
-    <div class="step {{ in_array(Route::currentRouteName(), ['edit.merchants.services', 'create.merchants.services']) ? 'active' : '' }}">
-        <a href="{{ route('edit.merchants.services', ['merchant_id' => request()->merchant_id]) }}">
-            <div class="step-number">4</div>
-            <div class="step-title">Services</div>
-        </a>
-    </div>
-</div>

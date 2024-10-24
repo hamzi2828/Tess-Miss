@@ -24,9 +24,9 @@
                         @foreach($merchant_shareholders as $shareholder)
                             <div class="col-md-6">
                                 <label for="document_{{ $document->id }}_{{ $shareholder->id }}" class="form-label">
-                                    {{ $document->title }} for {{ $shareholder->title }}
+                                    <strong> {{ $document->title }} for {{ $shareholder->title }}</strong>
                                     @if($document->is_required)
-                                        (<span class="required-asterisk">*</span> Required)
+                                        (Required)<span class="required-asterisk">*</span> 
                                     @endif
                                 </label>
                                 <div class="input-group">
@@ -44,14 +44,14 @@
                                             required
                                         @endif
                                     >
-                                    <button class="btn btn-secondary" type="button">Browse</button>
-                                    <button class="btn btn-primary" type="button">Upload</button>
                                 </div>
                             </div>
         
                             @if($document->require_expiry)
                             <div class="col-md-6">
-                                <label for="expiry_{{ $document->id }}_{{ $shareholder->id }}" class="form-label">Expiry for {{ $shareholder->title }} <span class="required-asterisk">*</span></label>
+                                <label for="expiry_{{ $document->id }}_{{ $shareholder->id }}" class="form-label">
+                                    <strong>  Expiry for {{ $shareholder->title }}   </strong>
+                                    <span class="required-asterisk">*</span></label>
                                 <div class="input-group">
                                     <input 
                                         type="date" 
@@ -60,7 +60,7 @@
                                         name="expiry_{{ $document->id }}_{{ $shareholder->id }}_{{ $shareholder->title }}" 
                                         required
                                     >
-                                    <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                               
                                 </div>
                             </div>
                             @endif
@@ -69,9 +69,9 @@
                         <!-- Normal Document Fields -->
                         <div class="col-md-6">
                             <label for="document_{{ $document->id }}" class="form-label">
-                                {{ $document->title }} 
+                                <strong> {{ $document->title }}</strong>
                                 @if($document->is_required)
-                                    (<span class="required-asterisk">*</span> Required)
+                                    (Required)<span class="required-asterisk">*</span> 
                                 @endif
                             </label>
                             <div class="input-group">
@@ -89,8 +89,7 @@
                                         required
                                     @endif
                                 >
-                                <button class="btn btn-secondary" type="button">Browse</button>
-                                <button class="btn btn-primary" type="button">Upload</button>
+                             
                             </div>
                         </div>
         
@@ -105,7 +104,7 @@
                                     name="expiry_{{ $document->id }}" 
                                     required
                                 >
-                                <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                           
                             </div>
                         </div>
                         @endif
@@ -123,3 +122,12 @@
 </div>
 
 @endsection
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Set the minimum date to today
+        let today = new Date().toISOString().split('T')[0]; // Get today's date in 'YYYY-MM-DD' format
+        document.querySelectorAll('input[type="date"]').forEach(function(dateInput) {
+            dateInput.setAttribute('min', today); // Set the min attribute dynamically to today's date
+        });
+    });
+</script>

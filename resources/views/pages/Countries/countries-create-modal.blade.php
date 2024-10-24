@@ -25,6 +25,7 @@
                 <select class="form-select" id="add-country-status" name="countryStatus" required>
                     <option value="">Select Status</option> <!-- Placeholder option -->
                     <option value="No Risk">No Risk</option>
+                    <option value="Low Risk">Low Risk</option>
                     <option value="Medium Risk">Medium Risk</option>
                     <option value="High Risk">High Risk</option>
                 </select>

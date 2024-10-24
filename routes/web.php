@@ -60,6 +60,10 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('merchant-categories', MerchantCategoriesController::class);
     Route::resource('countries', CountryController::class);
     Route::resource('merchants', MerchantsController::class);
+    // Add a new route for preview functionality for merchants
+    Route::get('/merchantsPreview}', [MerchantsController::class, 'preview'])->name('merchants.preview');
+
+
 
     // Merchant-specific KYC, Documents, Sales, Services
     Route::get('/merchantskyc', [MerchantsController::class, 'create_merchants_kfc'])->name('create.merchants.kfc');

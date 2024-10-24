@@ -37,6 +37,28 @@ class MerchantsController extends Controller
         return view('pages.merchants.merchants-list', compact('merchants'));
     }
 
+
+       // Method to preview merchant details
+       public function preview(Request $request)
+       {
+        $title  = 'Preview Merchants Details'; 
+           $merchantId = $request->input('merchant_id');
+           
+           $merchant_details = Merchant::with(['sales', 'services', 'shareholders', 'documents'])->where('id', $merchantId)->first();
+         
+            $MerchantCategory = MerchantCategory::all();
+        
+            $Country = Country::all();
+            $all_documents  = Document::all();
+            $services = Service::all(); 
+
+        
+
+           return view('pages.merchants.merchants-preview', compact('merchant_details','title','MerchantCategory','Country','all_documents','services'));
+       }
+       
+
+
     /**
      * Show the form for creating a new resource.
      */
@@ -62,6 +84,12 @@ class MerchantsController extends Controller
         }
         $merchant_documents = Document::all();
         $title = 'Create Merchants Documents'; 
+
+        $merchant_details = Merchant::with(['sales', 'services', 'shareholders', 'documents'])->where('id', $merchant_id)->first();
+        if ($merchant_details && !$merchant_details->documents->isEmpty() ) {
+            return redirect()->route('edit.merchants.documents', ['merchant_id' => $merchant_id]);
+            // ->with('error', 'No Sales found for this merchant.')->withInput($request->all());
+        }
 
         return view('pages.merchants.create.create-merchants-documents', compact('merchant_documents', 'title','merchant_shareholders'));
     }
@@ -135,49 +163,41 @@ class MerchantsController extends Controller
          return redirect()->route('merchants.index')->with('success', 'Merchant and Shareholders successfully added.');
      }
 
+   
      public function store_merchants_documents(Request $request)
      {
-         // Dump the request data to check structure
-         // dd($request->all());
-     
-         // Validate the request
          $validatedData = $request->validate([
              'document_*' => 'required|file|mimes:jpg,jpeg,png,pdf,doc,docx,xls,xlsx|max:2048',
              'expiry_*' => 'nullable|date',
          ]);
      
-         // Get the merchant ID from the request
          $merchant_id = $request->input('merchant_id');
-         
-         // Loop through all request data
+     
          foreach ($request->all() as $key => $value) {
-             // Check if the key starts with 'document_' and ensure it contains enough parts
              if (strpos($key, 'document_') === 0 && $request->hasFile($key)) {
-                 // Extract parts of the key
-                 // The key looks like "document_2_28_Silas95"
                  $keyParts = explode('_', $key);
      
-                 // Ensure there are enough parts to avoid undefined index errors
-                 if (count($keyParts) >= 4) {
-                     $document_id = $keyParts[1]; // Document ID
-                     $shareholder_id = $keyParts[2]; // Shareholder ID
-                     $shareholder_name = $keyParts[3]; // Shareholder name (last part)
+                 if (count($keyParts) === 2) {
+                     $document_id = $keyParts[1];
+                     $shareholder_id = null;
+                     $shareholder_name = null;
+                     $expiryDate = null;
+                 } elseif (count($keyParts) >= 4) {
+                     $document_id = $keyParts[1];
+                     $shareholder_id = $keyParts[2];
+                     $shareholder_name = implode('_', array_slice($keyParts, 3));
+                     $expiryDateKey = 'expiry_' . $document_id . '_' . $shareholder_id . '_' . $shareholder_name;
+                     $expiryDate = $request->input($expiryDateKey, null);
                  } else {
-                     // If parts are missing, skip this iteration
                      continue;
                  }
      
-                 // Handle the file upload
                  $file = $request->file($key);
-                 $fileName = time() . '_' . $shareholder_name . '_' . $file->getClientOriginalName(); // Append shareholder 
+                 $fileName = $document_id . '_' . ($shareholder_name ? $shareholder_name . '_' : '') . $file->getClientOriginalName();
                  
-                 $filePath = $file->storeAs('public/documents', $fileName);
-     
-                 // Handle expiry date
-                 $expiryDateKey = 'expiry_' . $document_id . '_' . $shareholder_id . '_' . $shareholder_name; // Construct expiry key with document ID, shareholder ID, and name
-                 $expiryDate = $request->input($expiryDateKey, null);
-     
-                 // Save the document
+             
+                 $filePath = $file->storeAs('/documents', $fileName);
+                 // Save the document information to the database
                  MerchantDocument::create([
                      'title' => $fileName,
                      'document' => $filePath,
@@ -187,18 +207,15 @@ class MerchantsController extends Controller
                      'document_type' => $file->getClientMimeType(),
                      'emailed' => false,
                      'status' => true,
-                     'shareholder_id' => $shareholder_id, // Store shareholder ID if needed
-                     'shareholder_name' => $shareholder_name, // Optionally store shareholder name
+                     'shareholders_id' => $shareholder_id,
                  ]);
              }
          }
      
-         // Notify users whose department stage is 2
          $stage2Users = User::whereHas('department', function ($query) {
              $query->where('stage', 2);
          })->get();
      
-         // Notification message content
          $notificationMessage = 'New documents have been uploaded: ';
          $addedByUserName = auth()->user()->name;
          $merchant = $merchant_id;
@@ -207,11 +224,14 @@ class MerchantsController extends Controller
              $user->notify(new MerchantActivityNotification('Documents', $merchant, $addedByUserName, $notificationMessage));
          }
      
-         // Redirect after saving documents
          return redirect()->route('edit.merchants.documents', ['merchant_id' => $merchant_id])
              ->with('success', 'Documents uploaded and saved successfully.')
              ->withInput($request->all());
      }
+     
+     
+     
+     
      
      
 
@@ -322,13 +342,13 @@ class MerchantsController extends Controller
 
         $id = $request->input('merchant_id'); 
         $merchant_details = Merchant::with(['documents', 'sales', 'services', 'shareholders'])->where('id', $id)->first();
-
+        $all_documents  = Document::all();
         if ($merchant_details && $merchant_details->documents->isEmpty() ) {
             return redirect()->route('create.merchants.documents', ['merchant_id' => $id])
             ->with('error', 'No Sales found for this merchant.')->withInput($request->all());
         }
         else {
-            return view('pages.merchants.edit.edit-merchants-documents', compact('merchant_details', 'title'));
+            return view('pages.merchants.edit.edit-merchants-documents', compact('merchant_details', 'title', 'all_documents'));
 
         }
 
@@ -420,51 +440,111 @@ class MerchantsController extends Controller
 
     }
 
-
-    
     public function update_merchants_documents(Request $request)
     {
+
+  
+
+        
         $validatedData = $request->validate([
             'document_*' => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx,xls,xlsx|max:2048',
             'expiry_*' => 'nullable|date',
         ]);
     
         $merchant_id = $request->input('merchant_id');
-    
-        foreach ($request->all() as $key => $value) {
-            if (strpos($key, 'document_') === 0) {
-                $document_id = str_replace('document_', '', $key);
-    
-                if ($request->hasFile($key)) {
-                    $file = $request->file($key);
-                    $fileName = time() . '_' . $file->getClientOriginalName();
-                    $filePath = $file->storeAs('public/documents', $fileName);
-    
-                    $expiryDateKey = 'expiry_' . $document_id;
-                    $expiryDate = $request->input($expiryDateKey, null);
-    
-                    MerchantDocument::updateOrCreate(
-                        [
-                            'merchant_id' => $merchant_id,
-                            'id' => $document_id
-                        ],
-                        [
-                            'title' => $file->getClientOriginalName(),
-                            'document' => $filePath,
-                            'date_expiry' => $expiryDate,
-                            'merchant_id' => $merchant_id,
-                            'added_by' => auth()->user()->id ?? 1,
-                            'document_type' => $file->getClientMimeType(),
-                            'emailed' => false,
-                            'status' => true,
-                        ]
-                    );
-                }
-            }
+  
+  
+          
+                foreach ($request->all() as $key => $value) {
+                
+                    if (strpos($key, 'document_') === 0 && $request->hasFile($key)) {
+                        $keyParts = explode('_', $key);
+                    
+                        if (count($keyParts) === 3) {
+                            // Format: "document_67"
+                           
+                            $document_id = $keyParts[1];
+                            $previos_document_id = $keyParts[2];
+                            $shareholder_id = null;
+                            $shareholder_name = null;
+                            $expiryDate = null;
+                            
+                        } elseif (count($keyParts) >= 4) {
+                            // Format: "document_2_Tina_68"
+                            $document_id = $keyParts[1];  
+                            $shareholder_name = $keyParts[2]; 
+                            $previos_document_id = $keyParts[3];  // Fetch the previous document ID
+                    
+                            $expiryDateKey = 'expiry_' . $document_id;
+                            $expiryDate = $request->input($expiryDateKey, null);
+                        } else {
+                            continue;
+                        }
+                    
+                        $file = $request->file($key);
+                        $fileName = $document_id . '_' . ($shareholder_name ? $shareholder_name . '_' : '') . $file->getClientOriginalName();
+                    
+                        // Store the file in the 'public/documents' directory
+                        $filePath = $file->storeAs('/documents', $fileName);
+                        
+                    
+                        // Fetch the previous document using the 'previos_document_id'
+                        $existingDocument = MerchantDocument::where('id', $previos_document_id)
+                                                             ->where('merchant_id', $merchant_id)
+                                                             ->first();
+                    
+                        // Update the existing document if it exists
+                        if ($existingDocument) {
+                            $existingDocument->update([
+                                'title' => $fileName,
+                                'document' => $filePath,
+                                'date_expiry' => $expiryDate,
+                                'added_by' => auth()->user()->id,
+                                'document_type' => $file->getClientMimeType(),
+                                'emailed' => false,
+                                'status' => true
+                            ]);
+                        } else {
+                            // If no previous document exists, create a new record
+                            MerchantDocument::create([
+                                'id' => $document_id,
+                                'title' => $fileName,
+                                'document' => $filePath,
+                                'date_expiry' => $expiryDate,
+                                'merchant_id' => $merchant_id,
+                                'added_by' => auth()->user()->id,
+                                'document_type' => $file->getClientMimeType(),
+                                'emailed' => false,
+                                'status' => true
+                            ]);
+                        }
+                    }
+                    
+                    
+                    foreach ($request->all() as $key => $value) {
+                        if (strpos($key, 'existing_document_') === 0) {
+                            $existing_document_id = str_replace('existing_document_', '', $key);
+                            $expiryDateKey = 'expiry_' . $existing_document_id;
+                            $expiryDate = $request->input($expiryDateKey, null);
+                    
+                            MerchantDocument::where('id', $existing_document_id)
+                                ->where('merchant_id', $merchant_id)
+                                ->update(['date_expiry' => $expiryDate]);
+                        }
+                    }
+                    
+                    
         }
-    
-        return redirect()->back()->with('success', 'Merchant and Shareholders successfully updated.');
+       
+        return redirect()->back()->with('success', 'Documents successfully updated.');
     }
+
+    
+
+
+  
+    
+    
 
     public function update_merchants_sales(Request $request)
     {

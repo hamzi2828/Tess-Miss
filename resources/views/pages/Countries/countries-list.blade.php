@@ -7,9 +7,24 @@
         <div class="app-ecommerce-country">
             <div class="d-flex justify-content-between mb-3">
                 <h4 class="fw-bold">Countries</h4>
-                <button class="btn btn-primary btn-lg" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAddCountry" style="width: 194px;">
-                    <i class="ti ti-plus me-1"></i> Add Country
-                </button>
+
+                  <div class="export-btn">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="exportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="ti ti-download"></i> Export
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="exportDropdown">
+                        <li>
+                            <a class="dropdown-item" id="exportCsv" href="#">
+                                <i class="ti ti-file"></i> CSV
+                            </a>
+                        </li>
+                    </ul>
+
+                    <button class="btn btn-primary btn-lg" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAddCountry" style="width: 194px;">
+                        <i class="ti ti-plus me-1"></i> Add Country
+                    </button>
+                </div>
+               
             </div>
 
             <div class="card">
@@ -96,14 +111,32 @@
 @push('script')
 <script>
     $(document).ready(function() {
-        $('#customCountryTable').DataTable({
-            "paging": true,      // Enable pagination
-            "ordering": true,    // Enable sorting
-            "info": true,        // Display table information
-            "searching": true,   // Enable search functionality
-            "order": [[ 3, 'asc' ]] // Default sorting by Country Name (column index 3), ascending
+        var table = $('#customCountryTable').DataTable({
+            "paging": true,
+            "ordering": true,
+            "info": true,
+            "searching": true,
+            "order": [[ 3, 'asc' ]], // Default sorting by Country Name
+            
+            buttons: [
+                {
+                    extend: 'csvHtml5',
+                    title: 'Countries Data',
+                    text: 'Export CSV',
+                    className: 'btn btn-secondary mt'
+                }
+            ]
+        });
+
+        // Attach CSV export event to the dropdown item
+        $('#exportCsv').on('click', function() {
+            table.button('.buttons-csv').trigger();
         });
     });
+
+
+         
+
 </script>
 
 @endpush

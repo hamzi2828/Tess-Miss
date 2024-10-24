@@ -22,7 +22,8 @@ class MerchantDocument extends Model
         'added_by',
         'approved_by',
         'emailed',
-        'status'
+        'status',
+        'shareholders_id',
     ];
 
     // Relationship with the Merchant model
